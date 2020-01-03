@@ -7,14 +7,22 @@ using System.Text;
 
 namespace FirstMonoGameApp
 {
-    class IncaTile
+    class GreenBox
     {
-      
-        Texture2D incaTileTexture;
-        
+        Texture2D greenBox;
+
+        public Vector2 GPPosition;
+
+        public void initInitialize()
+        {
+            GPPosition.X = 630;
+            GPPosition.Y = 441;
+
+        }
+
         public void LoadContent(ContentManager content)
         {
-            incaTileTexture = content.Load<Texture2D>("inca_tile01");
+            greenBox = content.Load<Texture2D>("greenBlock");
         }
 
         public void Update(GameTime gameTime)
@@ -24,17 +32,16 @@ namespace FirstMonoGameApp
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(incaTileTexture,
-              position: new Vector2(150, 150), //x,y
+            spriteBatch.Draw(greenBox,
+              position: new Vector2(GPPosition.X, GPPosition.Y), //x,y
               sourceRectangle: null,
               color: Color.White,
               rotation: 0.0f, //deg
-              origin: new Vector2(incaTileTexture.Width / 2, incaTileTexture.Height / 2),
-              scale: new Vector2(2, 2), //scaleX, scaleY
+              origin: new Vector2(0, greenBox.Height),
+              scale: new Vector2(0.9f, 0.9f), //scaleX, scaleY
               effects: SpriteEffects.None, //Flip the image
               layerDepth: 0); // z-index
 
         }
-
     }
 }
