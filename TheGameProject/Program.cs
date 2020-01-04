@@ -4,8 +4,14 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+
 namespace FirstMonoGameApp
 {
+    class Global
+    {
+        public static bool playerisdying=false;
+    }
+
     public class MyFuckingGame : Game
     {
         GraphicsDeviceManager graphics;
@@ -73,7 +79,93 @@ namespace FirstMonoGameApp
             float delta = deltaTime.Milliseconds;
             delta = delta / 1000;
 
+            if (player.PlBoundingBox.Right < 450)
+            {
 
+                if (player.PlBoundingBox.Right >= 298 && player.PlBoundingBox.Bottom >= 416 && player.PlBoundingBox.Right < 350)
+                {
+                    player.isColidingWithRight = true;
+                }
+                else
+                {
+                    player.isColidingWithRight = false;
+                }
+
+                if (player.PlBoundingBox.Right >= 400 && player.PlBoundingBox.Bottom >= 416 && player.PlBoundingBox.Right < 420)
+                {
+                    player.isColidingWithLeft = true;
+                }
+                else
+                {
+                    player.isColidingWithLeft = false;
+                }
+
+                if (player.PlBoundingBox.Right > 306 && player.PlBoundingBox.Bottom <= 415 && player.PlBoundingBox.Bottom >= 410 && player.PlBoundingBox.Right < 410)
+                {
+                    player.PlPositionBFJump = player.PlPosition;
+                    player.isJumping = false;
+                }
+
+                if (!player.isJumping && player.PlBoundingBox.Right < 306 && player.PlPosition.Y != 407)
+                {
+                    player.PlPositionBFJump.Y = player.floorLevel;
+                    player.isJumping = true;
+                    player.Velocity.Y = -420;
+                }
+
+
+                if (!player.isJumping && player.PlBoundingBox.Right > 415 && player.PlPosition.Y != 407)
+                {
+                    player.PlPositionBFJump.Y = player.floorLevel;
+                    player.isJumping = true;
+                    player.Velocity.Y = -420;
+                }
+
+
+            }
+            if (player.PlBoundingBox.Right > 490)
+            {
+                if (player.PlBoundingBox.Right >= 505 && player.PlBoundingBox.Bottom >= 416 && player.PlBoundingBox.Right < 550)
+                {
+                    player.isColidingWithRight = true;
+                }
+                else
+                {
+                    player.isColidingWithRight = false;
+                }
+
+                if (player.PlBoundingBox.Right >= 590 && player.PlBoundingBox.Bottom >= 416 && player.PlBoundingBox.Right < 615)
+                {
+                    player.isColidingWithLeft = true;
+                }
+                else
+                {
+                    player.isColidingWithLeft = false;
+                }
+
+                if (player.PlBoundingBox.Right > 505 && player.PlBoundingBox.Bottom <= 415 && player.PlBoundingBox.Bottom >= 410 && player.PlBoundingBox.Right < 615)
+                {
+                    player.PlPositionBFJump = player.PlPosition;
+                    player.isJumping = false;
+                }
+
+                if (!player.isJumping && player.PlBoundingBox.Right < 505 && player.PlPosition.Y != 407)
+                {
+                    player.PlPositionBFJump.Y = player.floorLevel;
+                    player.isJumping = true;
+                    player.Velocity.Y = -420;
+                }
+
+
+                if (!player.isJumping && player.PlBoundingBox.Right > 615 && player.PlPosition.Y != 407)
+                {
+                    player.PlPositionBFJump.Y = player.floorLevel;
+                    player.isJumping = true;
+                    player.Velocity.Y = -420;
+                }
+
+
+            }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
@@ -93,6 +185,12 @@ namespace FirstMonoGameApp
             }
 
             player.Update(isKeyLeftPressed, isKeyRightPressed, delta);
+            //Console.WriteLine(player.PlBoundingBox.Right);
+            if (player.PlBoundingBox.Intersects(spike.SpikeBoundingBox))
+            {
+                
+                player.isDying=true;
+            }
 
             isKeyLeftPressed = false;
             isKeyRightPressed = false;
@@ -123,16 +221,26 @@ namespace FirstMonoGameApp
 
             greenBox.Draw(spriteBatch);
 
-            player.Draw(spriteBatch);
-           
+          //  Console.WriteLine(player.isDying);
+            if (!player.isDying)
+            {
+                player.Draw(spriteBatch);
+            }
+            else
+            {
+             //   Console.WriteLine(1234);
+                player.DrawDying(spriteBatch);
+            }
             spriteBatch.End();
-
+           
             base.Draw(gameTime);
+            
         }
 
         #endregion
     }
 
+    
     class Program {
         static void Main(string[] args)
         {
@@ -142,3 +250,14 @@ namespace FirstMonoGameApp
         }
     }
 }
+
+
+
+/* if (player.PlBoundingBox.Intersects(incaTile.ITBoundingBox))
+ {
+     player.isColidingWithRight=true;
+ }
+ else
+ {
+     player.isColidingWithRight = false;
+ }*/

@@ -11,6 +11,8 @@ namespace FirstMonoGameApp
     {
 
         public Vector2 ITPosition;
+
+        public Rectangle ITBoundingBox;
       
         Texture2D incaTile;
 
@@ -24,6 +26,7 @@ namespace FirstMonoGameApp
         public void LoadContent(ContentManager content)
         {
             incaTile = content.Load<Texture2D>("inca_tile01");
+            ITBoundingBox = new Rectangle ((int)ITPosition.X, (int)ITPosition.Y, 2 *incaTile.Width, 2 * incaTile.Height);
         }
 
         public void Update(GameTime gameTime)

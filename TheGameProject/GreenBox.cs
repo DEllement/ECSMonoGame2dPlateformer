@@ -11,6 +11,8 @@ namespace FirstMonoGameApp
     {
         Texture2D greenBox;
 
+        public Rectangle GBBoundingBox;
+
         public Vector2 GPPosition;
 
         public void initInitialize()

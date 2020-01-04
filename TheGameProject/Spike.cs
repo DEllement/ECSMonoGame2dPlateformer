@@ -13,6 +13,8 @@ namespace FirstMonoGameApp
 
         public Vector2 spikePosition;
 
+        public Rectangle SpikeBoundingBox;
+
         public void initInitialize()
         {
             spikePosition.X = 350;
@@ -23,6 +25,7 @@ namespace FirstMonoGameApp
         public void LoadContent(ContentManager content)
         {
             spike = content.Load<Texture2D>("pike02");
+            SpikeBoundingBox = new Rectangle((int)spikePosition.X, (int)spikePosition.Y, 6 * spike.Width, 2 * spike.Height);
         }
 
         public void Update(GameTime gameTime)
