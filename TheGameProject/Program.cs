@@ -72,6 +72,11 @@ namespace FirstMonoGameApp
         //4. This is the update method called many time per second, delta infos is available in gameTime.ElapsedGameTime
         protected override void Update(GameTime gameTime)
         {
+
+
+            KeyboardState CurrentKeyboardState = Keyboard.GetState();
+
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
@@ -79,6 +84,7 @@ namespace FirstMonoGameApp
             float delta = deltaTime.Milliseconds;
             delta = delta / 1000;
 
+            //Bad
             if (player.PlBoundingBox.Right < 450)
             {
 
@@ -186,9 +192,8 @@ namespace FirstMonoGameApp
 
             player.Update(isKeyLeftPressed, isKeyRightPressed, delta);
             //Console.WriteLine(player.PlBoundingBox.Right);
-            if (player.PlBoundingBox.Intersects(spike.SpikeBoundingBox))
+            if (player.PlBoundingBox.Intersects(spike.SpikeBoundingBox)) //Good
             {
-                
                 player.isDying=true;
             }
 

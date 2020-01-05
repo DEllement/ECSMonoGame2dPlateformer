@@ -18,7 +18,9 @@ namespace FirstMonoGameApp
 
         public bool isJumping;
 
-        public Rectangle PlBoundingBox;
+        public float Scale { get; set; }
+
+        public Rectangle PlBoundingBox => new Rectangle((int)PlPosition.X, (int)PlPosition.Y, (int)(Scale * persoTexture.Width), (int)(Scale * persoTexture.Height));
 
         public bool isColidingWithTop;
         public bool isColidingWithBottom;
@@ -50,6 +52,8 @@ namespace FirstMonoGameApp
             isJumping=
             isDying
             =false;
+
+            Scale = 2;
     }
 
 
@@ -58,11 +62,13 @@ namespace FirstMonoGameApp
             Health = 3;
             persoTexture = content.Load<Texture2D>("idle");
             maxJump = 100;
+
+
         }
 
         public void Update(bool isKeyLeftPressed, bool isKeyRightPressed, float delta) {
-           PlBoundingBox = new Rectangle((int)PlPosition.X, (int)PlPosition.Y, 2 * persoTexture.Width, 2 * persoTexture.Height);
-            Console.WriteLine(PlBoundingBox.Right);
+          // PlBoundingBox = new Rectangle((int)PlPosition.X, (int)PlPosition.Y, 2 * persoTexture.Width, 2 * persoTexture.Height);
+          //  Console.WriteLine(PlBoundingBox.Right);
 
             if (!isColidingWithLeft)
             {
@@ -129,7 +135,7 @@ namespace FirstMonoGameApp
               color: Color.Red,
               rotation: 0.0f, //deg
               origin: new Vector2(persoTexture.Width / 2, persoTexture.Height / 2),
-              scale: new Vector2(2, 2), //scaleX, scaleY
+              scale: new Vector2(Scale, Scale), //scaleX, scaleY
               effects: SpriteEffects.None, //Flip the image
               layerDepth: 0); // z-index
         }
