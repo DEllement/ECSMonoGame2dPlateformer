@@ -98,7 +98,6 @@ namespace TheCollisionWithEcs
 
         #endregion
 
-
         private GraphicsDeviceManager graphics;
         public CollisionEcsGame()
         {
@@ -118,7 +117,7 @@ namespace TheCollisionWithEcs
             _world = new WorldBuilder()
                 //.AddSystem(new InputSystem())
                 .AddSystem(new PhysicSystem())
-                .AddSystem(new RenderSystem(GraphicsDevice))
+                .AddSystem(new RenderSystem(graphics.GraphicsDevice))
                 .Build();
 
             var player = CreatePlayer(new Point2(0, Window.ClientBounds.Height / 2), new Point(50, 50), Color.Yellow);
@@ -184,7 +183,10 @@ namespace TheCollisionWithEcs
 
         public override void Update(GameTime gameTime)
         {
+            float delta = (float) gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+
             var player = GetEntity(CollisionEcsGame.playerId); //CHEAT!!!!
+            bool isPlayerCollidingWithAFloor = false;
 
             foreach (var entityId in ActiveEntities)
             {
@@ -193,17 +195,12 @@ namespace TheCollisionWithEcs
                 if (!entity.Has<PhysicComponent>())
                     continue;
 
-                var physicComp = entity.Get<PhysicComponent>();
-
-                float delta = (float) gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
-                Console.WriteLine(delta);
-
-                bool isPlayerCollidingWithAFloor = false;
-
                 var physicsComponents = _physicComponentsMapper.Components.ToList();
 
                 //Gravity
-                physicsComponents.ForEach(obj =>
+                physicsComponents.Where(b=>b.IsAffectedByGravity)
+                                 .ToList()
+                                 .ForEach(obj =>
                 {
                     var bb = obj.BoundingBox;
                     var nextY = (int) (obj.Position.Y + velocityY * delta);
@@ -280,14 +277,14 @@ namespace TheCollisionWithEcs
     public class RenderSystem : EntityDrawSystem
     {
         private GraphicsDevice _graphicsDevice;
-        SpriteBatch _spriteBatch;
+        private SpriteBatch _spriteBatch;
 
         private Texture2D fillTexture;
         //private ComponentMapper<VisualComponent> _colorComponentsMapper;
         //private ComponentMapper<PhysicComponent> _physicComponentMapper;
 
         public RenderSystem(GraphicsDevice graphicsDevice)
-            : base(Aspect.All( typeof(Color)))
+            : base(Aspect.All( typeof(VisualComponent), typeof(PhysicComponent)))
         {
             _graphicsDevice = graphicsDevice;
             _spriteBatch = new SpriteBatch(graphicsDevice);
@@ -304,6 +301,10 @@ namespace TheCollisionWithEcs
 
         public override void Draw(GameTime gameTime)
         {
+            _graphicsDevice.Clear(Color.Black); //This paint the background black
+
+            _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+
             foreach (var entityId in ActiveEntities)
             {
                 // draw your entities
@@ -316,10 +317,6 @@ namespace TheCollisionWithEcs
 
                 _spriteBatch.Draw(fillTexture, bb , color);
             }
-
-            _graphicsDevice.Clear(Color.Black); //This paint the background black
-
-            _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
             _spriteBatch.End();
         }
