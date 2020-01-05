@@ -62,7 +62,7 @@ namespace FirstMonoGameApp
 
         public void Update(bool isKeyLeftPressed, bool isKeyRightPressed, float delta) {
            PlBoundingBox = new Rectangle((int)PlPosition.X, (int)PlPosition.Y, 2 * persoTexture.Width, 2 * persoTexture.Height);
-            Console.WriteLine(PlBoundingBox.Right);
+            Console.WriteLine(PlBoundingBox.Right + " " + delta);
 
             if (!isColidingWithLeft)
             {
