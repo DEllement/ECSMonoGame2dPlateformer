@@ -9,16 +9,18 @@ using MonoGame.Extended;
 
 namespace TheCollision
 {
+    //Entities
     public class Box
     {
+        //Visual Component
         public Color Color { get; set; }
 
+        //Physic Component
         public Point2 Position { get; set; }
         public Point Size { get; set; }
         public Rectangle BoundingBox => new Rectangle((int)Position.X,(int)Position.Y, Size.X, Size.Y);
         public bool IsRigid { get; set; }
         public bool IsAffectedByGravity { get; set; }
-
         public int X
         {
             get => (int)Position.X;
@@ -42,12 +44,14 @@ namespace TheCollision
 
     public class Player : Box
     {
+        //InputComponent
         public bool IsLeftDown { get; set; }
         public bool IsRightDown { get; set; }
         public bool IsUpDown { get; set; }
         public bool IsBottomDown { get; set; }
         public bool IsSpaceDown { get; set; }
 
+        //PlayerDataComponent
         public bool IsJumping { get; set; }
 
         public Player(Point2 position, Point size, Color color) : base(position, size, color)
@@ -115,23 +119,15 @@ namespace TheCollision
 
             base.Update(gameTime);
         }
+
         protected override void Draw(GameTime gameTime)
         {
-            graphics.GraphicsDevice.Clear(Color.Black); //This paint the background black
-
-            spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-
-            boxes.ForEach(box =>
-            {
-                spriteBatch.Draw(fillTexture, box.BoundingBox , box.Color);
-            });
-            spriteBatch.Draw(fillTexture, player.BoundingBox , player.Color);
-
-            spriteBatch.End();
+            UpdateRender(gameTime);
 
             base.Draw(gameTime);
         }
 
+        //InputSystem
         private void UpdateInputs()
         {
             player.IsLeftDown   = Keyboard.GetState().IsKeyDown(Keys.D);
@@ -141,9 +137,10 @@ namespace TheCollision
             player.IsSpaceDown  = Keyboard.GetState().IsKeyDown(Keys.Space);
         }
 
+        
+        //Physics System
         private float velocityY = 300;
         private float velocityX = 300;
-
         private int jumpMaxY = 0;
 
         private void UpdatePhysics(GameTime gameTime)
@@ -222,6 +219,22 @@ namespace TheCollision
                     player.IsJumping = false;
             }
 
+        }
+
+        //Render System
+        private void UpdateRender(GameTime gameTime)
+        {
+            graphics.GraphicsDevice.Clear(Color.Black); //This paint the background black
+
+            spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+
+            boxes.ForEach(box =>
+            {
+                spriteBatch.Draw(fillTexture, box.BoundingBox , box.Color);
+            });
+            spriteBatch.Draw(fillTexture, player.BoundingBox , player.Color);
+
+            spriteBatch.End();
         }
     }
 }
