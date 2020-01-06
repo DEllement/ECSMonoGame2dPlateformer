@@ -168,8 +168,8 @@ namespace TheCollisionWithEcs
     public class PhysicSystem : EntityUpdateSystem
     {
         private ComponentMapper<PhysicComponent> _physicComponentsMapper;
-        private float velocityY = 300;
-        private float velocityX = 300;
+        private float velocityY = 100;
+        private float velocityX = 100;
         private int jumpMaxY = 0;
 
         public PhysicSystem() : base(Aspect.All( typeof(PhysicComponent)))
@@ -185,6 +185,8 @@ namespace TheCollisionWithEcs
         {
             float delta = (float) gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
 
+            Console.WriteLine(delta);
+
             var player = GetEntity(CollisionEcsGame.playerId); //CHEAT!!!!
             bool isPlayerCollidingWithAFloor = false;
 
@@ -196,6 +198,7 @@ namespace TheCollisionWithEcs
                     continue;
 
                 var physicsComponents = _physicComponentsMapper.Components.ToList();
+                
 
                 //Gravity
                 physicsComponents.Where(b=>b.IsAffectedByGravity)
@@ -207,7 +210,7 @@ namespace TheCollisionWithEcs
 
                     var targetBB = new Rectangle((int)obj.Position.X,nextY,bb.Width,bb.Height);
                     obj.Y = nextY;
-                    var willCollideWith = physicsComponents.FirstOrDefault(box => box != obj && box.IsRigid && targetBB.Intersects(box.BoundingBox));
+                    var willCollideWith = physicsComponents.FirstOrDefault(box => box != obj && box != player.Get<PhysicComponent>() && box.IsRigid && targetBB.Intersects(box.BoundingBox));
                     if (willCollideWith != null)
                     {
                         obj.Y = willCollideWith.Y - obj.Size.Y;
@@ -216,16 +219,24 @@ namespace TheCollisionWithEcs
                     }
                 });
 
+                physicsComponents.RemoveAll(physComp=> physComp == player.Get<PhysicComponent>());
+
                 //move left
                 if (player.Get<UserInputComponent>().IsLeftDown)
                 {
                     var bb = player.Get<PhysicComponent>().BoundingBox;
                     var nextX = (int) (player.Get<PhysicComponent>().Position.X + velocityX * delta);
-                    //var targetBB = new Rectangle(nextX,(int)player.Position.Y,bb.Width,bb.Height);
+                    var targetBB = new Rectangle(nextX,(int)player.Get<PhysicComponent>().Position.Y, bb.Width,bb.Height);
 
                     //Can Player go left?
-                    if (!physicsComponents.Any(box =>  box.IsRigid && bb.Intersects(box.BoundingBox)))
+                    var willCollideWith = physicsComponents.FirstOrDefault(box => box.IsRigid && targetBB.Intersects(box.BoundingBox));
+                    if (willCollideWith == null)
                         player.Get<PhysicComponent>().X = nextX;
+                    //else
+                    //    player.Get<PhysicComponent>().X = willCollideWith.X + bb.Width;
+                
+
+                    
                 }
 
                 //move right
@@ -233,11 +244,14 @@ namespace TheCollisionWithEcs
                 {
                     var bb = player.Get<PhysicComponent>().BoundingBox;
                     var nextX = (int) (player.Get<PhysicComponent>().Position.X - velocityX * delta);
-                   // var targetBB = new Rectangle(nextX,(int)player.Position.Y,bb.Width,bb.Height);
+                    var targetBB = new Rectangle(nextX,(int)player.Get<PhysicComponent>().Position.Y, bb.Width,bb.Height);
 
-                    //Can Player go right?
-                    if (!physicsComponents.Any(box =>  box.IsRigid && bb.Intersects(box.BoundingBox)))
+                    //Can Player go left?
+                    var willCollideWith = physicsComponents.FirstOrDefault(box => box.IsRigid && targetBB.Intersects(box.BoundingBox));
+                    if (willCollideWith == null)
                         player.Get<PhysicComponent>().X = nextX;
+                    //else
+                    //    player.Get<PhysicComponent>().X = willCollideWith.X + bb.Width;
                 }
 
                 //jumping
@@ -245,9 +259,9 @@ namespace TheCollisionWithEcs
                 {
                     var bb = player.Get<PhysicComponent>().BoundingBox;
                     var nextY = (int) (player.Get<PhysicComponent>().Position.Y - (velocityY * 2) * delta);
-                    //var targetBB = new Rectangle((int) player.Position.X, nextY, bb.Width, bb.Height);
+                    var targetBB = new Rectangle((int) player.Get<PhysicComponent>().X, nextY, bb.Width, bb.Height);
 
-                    var canJump = !physicsComponents.Any(box => box.IsRigid && bb.Intersects(box.BoundingBox));
+                    var canJump = !physicsComponents.Any(box => box.IsRigid && targetBB.Intersects(box.BoundingBox));
                     if (canJump)
                     {
                         player.Get<PlayerDataComponent>().IsJumping = true;
@@ -259,9 +273,9 @@ namespace TheCollisionWithEcs
                 {
                     var bb = player.Get<PhysicComponent>().BoundingBox;
                     var nextY = (int) (player.Get<PhysicComponent>().Position.Y - (velocityY * 2) * delta);
-                    //var targetBB = new Rectangle((int) player.Position.X, nextY, bb.Width, bb.Height);
+                    var targetBB = new Rectangle((int) player.Get<PhysicComponent>().X, nextY, bb.Width, bb.Height);
 
-                    var isColliding = !physicsComponents.Any(box => box.IsRigid && bb.Intersects(box.BoundingBox));
+                    var isColliding = !physicsComponents.Any(box => box.IsRigid && targetBB.Intersects(box.BoundingBox));
                     if (isColliding && player.Get<PhysicComponent>().Y > jumpMaxY)
                         player.Get<PhysicComponent>().Y = nextY;
                     else
