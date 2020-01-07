@@ -108,14 +108,12 @@ namespace TheCollisionWithEcs
 
         protected override void Initialize()
         {
-           
-
             base.Initialize();
         }
         protected override void LoadContent()
         {
             _world = new WorldBuilder()
-             //  .AddSystem(new InputSystem())
+                .AddSystem(new InputSystem())
                 .AddSystem(new PhysicSystem())
                 .AddSystem(new RenderSystem(graphics.GraphicsDevice))
                 .Build();
@@ -150,37 +148,9 @@ namespace TheCollisionWithEcs
             base.Draw(gameTime);
         }
 
-        //InputSystem
-        private void UpdateInputs()
-        {
-            var player = _world.GetEntity(playerId);
-
-            player.Get<UserInputComponent>().IsLeftDown   = Keyboard.GetState().IsKeyDown(Keys.D);
-            player.Get<UserInputComponent>().IsRightDown  = Keyboard.GetState().IsKeyDown(Keys.A);
-            player.Get<UserInputComponent>().IsUpDown     = Keyboard.GetState().IsKeyDown(Keys.W);
-            player.Get<UserInputComponent>().IsBottomDown = Keyboard.GetState().IsKeyDown(Keys.S);
-            player.Get<UserInputComponent>().IsSpaceDown  = Keyboard.GetState().IsKeyDown(Keys.Space);
-        }
     }
 
-    public class InputSystem : EntityUpdateSystem
-    {
-        public override void Initialize(IComponentMapperService mapperService)
-        {
-            
-        }
-
-        public override void Update(GameTime gameTime)
-        {
-            var player = GetEntity(CollisionEcsGame.playerId);
-            player.Get<UserInputComponent>().IsLeftDown = Keyboard.GetState().IsKeyDown(Keys.D);
-            player.Get<UserInputComponent>().IsRightDown = Keyboard.GetState().IsKeyDown(Keys.A);
-            player.Get<UserInputComponent>().IsUpDown = Keyboard.GetState().IsKeyDown(Keys.W);
-            player.Get<UserInputComponent>().IsBottomDown = Keyboard.GetState().IsKeyDown(Keys.S);
-            player.Get<UserInputComponent>().IsSpaceDown = Keyboard.GetState().IsKeyDown(Keys.Space);
-            base.Update(gameTime);
-        }
-    }
+  
 
     public class PhysicSystem : EntityUpdateSystem
     {
@@ -316,7 +286,9 @@ namespace TheCollisionWithEcs
         //private ComponentMapper<PhysicComponent> _physicComponentMapper;
 
         public RenderSystem(GraphicsDevice graphicsDevice)
-            : base(Aspect.All( typeof(VisualComponent), typeof(PhysicComponent)))
+            : base(Aspect.All( 
+                typeof(VisualComponent),
+                typeof(PhysicComponent)))
         {
             _graphicsDevice = graphicsDevice;
             _spriteBatch = new SpriteBatch(graphicsDevice);
