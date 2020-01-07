@@ -7,10 +7,6 @@ using Microsoft.Xna.Framework.Input;
 
 namespace FirstMonoGameApp
 {
-    class Global
-    {
-        public static bool playerisdying=false;
-    }
 
     public class MyFuckingGame : Game
     {

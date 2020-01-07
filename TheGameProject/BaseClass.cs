@@ -11,10 +11,38 @@ namespace TheGameProject
 {
     class BaseClass
     {
-        public Point2 position;
 
-        public Point2 size;
+
+        //Physic Component\
+        Texture2D boxTexture;
+
+        public Point2 Position { get; set; }
+        public Point Size { get; set; }
+        public Rectangle BoundingBox => new Rectangle((int)Position.X, (int)Position.Y, Size.X, Size.Y);
+        public bool IsRigid { get; set; }
+        public bool IsAffectedByGravity { get; set; }
+        public int X
+        {
+            get => (int)Position.X;
+            set => Position = new Point2(value, Position.Y);
+        }
+        public int Y
+        {
+            get => (int)Position.Y;
+            set => Position = new Point2(Position.X, value);
+        }
+
+        public BaseClass(Texture2D BoxTexture, Point2 position, Point size, bool isAffectedByGravity = false)
+        {
+            Position = position;
+            Size = size;
+            IsRigid = true;
+            IsAffectedByGravity = isAffectedByGravity;
+            boxTexture = BoxTexture;
+        }
 
 
     }
+
+   
 }

@@ -4,140 +4,30 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using MonoGame.Extended;
 
-namespace FirstMonoGameApp
+namespace TheGameProject
 {
-    class Player
+    namespace FirstMonoGameApp
     {
-        public int Health { get; set; }
 
-        public int maxJump;
 
-        public bool isDead;
-        public bool isDying;
-
-        public bool isJumping;
-
-        public float Scale { get; set; }
-
-        public Rectangle PlBoundingBox => new Rectangle((int)PlPosition.X, (int)PlPosition.Y, (int)(Scale * persoTexture.Width), (int)(Scale * persoTexture.Height));
-
-        public bool isColidingWithTop;
-        public bool isColidingWithBottom;
-        public bool isColidingWithLeft;
-        public bool isColidingWithRight;
-
-        public Vector2 Velocity;
-
-        public Vector2 PlPositionBFJump;
-        public Vector2 PlPosition;
-
-        public int floorLevel;
-
-        Texture2D persoTexture;
-
-        public void initInitialize()
+        class Player : BaseClass
         {
-            
-            Velocity.X = 500;
-            Velocity.Y = 0;
-            PlPosition.X = 180;
-            PlPosition.Y = 407;
-            floorLevel = 407;
-            isColidingWithTop=
-            isColidingWithBottom=
-            isColidingWithLeft=
-            isColidingWithRight=
-            isDead=
-            isJumping=
-            isDying
-            =false;
+            public bool IsLeftDown { get; set; }
+            public bool IsRightDown { get; set; }
+            public bool IsUpDown { get; set; }
+            public bool IsBottomDown { get; set; }
+            public bool IsSpaceDown { get; set; }
 
-            Scale = 2;
-    }
+            //PlayerDataComponent
+            public bool IsJumping { get; set; }
 
-
-        public void LoadContent(ContentManager content)
-        {
-            Health = 3;
-            persoTexture = content.Load<Texture2D>("idle");
-            maxJump = 100;
-
-
-        }
-
-        public void Update(bool isKeyLeftPressed, bool isKeyRightPressed, float delta) {
-          // PlBoundingBox = new Rectangle((int)PlPosition.X, (int)PlPosition.Y, 2 * persoTexture.Width, 2 * persoTexture.Height);
-          //  Console.WriteLine(PlBoundingBox.Right);
-
-            if (!isColidingWithLeft)
+            public Player(Texture2D boxTexture ,Point2 position, Point size, bool isAffectedByGravity) : base(boxTexture ,position, size, isAffectedByGravity)
             {
-                if (isKeyLeftPressed)
-                {
-                    PlPosition.X -= Velocity.X * delta;
-                }
+                IsAffectedByGravity = true;
             }
-            if (!isColidingWithRight)
-            {
-                if (isKeyRightPressed)
-                {
-                    PlPosition.X += Velocity.X * delta;
-                }
-            }
-            if (isJumping)
-            {
-                if (!isColidingWithBottom)
-                {
-                    PlPosition.Y -= Velocity.Y * delta;
-                    if (PlPosition.Y < PlPositionBFJump.Y - maxJump)
-                        Velocity.Y = -420.0f;
-                    if (PlPosition.Y >= PlPositionBFJump.Y && Velocity.Y < 0)
-                    {
-                        isJumping = false;
-                        Velocity.Y = 0;
-                    }
-                }
-                else
-                {
-
-                }
-            }
-
-            if (isDying)
-            {
-                System.Threading.Thread.Sleep(2000);
-                initInitialize();
-                Console.WriteLine("afte");
-                Console.WriteLine(isDying);
-            }
-
-         // Console.WriteLine(PlBoundingBox.Right);
-        }
-
-
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(persoTexture,
-              position: new Vector2(PlPosition.X, PlPosition.Y), //x,y
-              sourceRectangle: null,
-              color: Color.White,
-              rotation: 0.0f, //deg
-              origin: new Vector2(persoTexture.Width / 2, persoTexture.Height / 2),
-              scale: new Vector2(2, 2), //scaleX, scaleY
-              effects: SpriteEffects.None, //Flip the image
-              layerDepth: 0); // z-index
-        }
-        public void DrawDying(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(persoTexture,
-              position: new Vector2(PlPosition.X, PlPosition.Y), //x,y
-              sourceRectangle: null,
-              color: Color.Red,
-              rotation: 0.0f, //deg
-              origin: new Vector2(persoTexture.Width / 2, persoTexture.Height / 2),
-              scale: new Vector2(Scale, Scale), //scaleX, scaleY
-              effects: SpriteEffects.None, //Flip the image
-              layerDepth: 0); // z-index
         }
     }
+
 }

@@ -29,11 +29,6 @@ namespace FirstMonoGameApp
             ITBoundingBox = new Rectangle ((int)ITPosition.X, (int)ITPosition.Y, 2 *incaTile.Width, 2 * incaTile.Height);
         }
 
-        public void Update(GameTime gameTime)
-        {
-
-        }
-
         public void Draw(SpriteBatch spriteBatch, int x)
         {
             spriteBatch.Draw(incaTile,

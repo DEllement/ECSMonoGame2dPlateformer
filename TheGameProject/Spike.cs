@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+
 namespace FirstMonoGameApp
 {
     class Spike
@@ -28,10 +29,6 @@ namespace FirstMonoGameApp
             SpikeBoundingBox = new Rectangle((int)spikePosition.X, (int)spikePosition.Y, 6 * spike.Width, 2 * spike.Height);
         }
 
-        public void Update(GameTime gameTime)
-        {
-
-        }
 
         public void Draw(SpriteBatch spriteBatch, int x)
         {

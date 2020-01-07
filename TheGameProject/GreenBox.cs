@@ -27,11 +27,6 @@ namespace FirstMonoGameApp
             greenBox = content.Load<Texture2D>("greenBlock");
         }
 
-        public void Update(GameTime gameTime)
-        {
-
-        }
-
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(greenBox,
