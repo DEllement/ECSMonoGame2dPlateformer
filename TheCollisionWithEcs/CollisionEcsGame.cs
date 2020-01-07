@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -24,33 +25,7 @@ namespace TheCollisionWithEcs
         }
     }
 
-    public class PhysicComponent
-    {
-        public Point2 Position { get; set; }
-        public Point Size { get; set; }
-        public Rectangle BoundingBox => new Rectangle((int)Position.X,(int)Position.Y, Size.X, Size.Y);
-        public bool IsRigid { get; set; }
-        public bool IsAffectedByGravity { get; set; }
-        public int X
-        {
-            get => (int)Position.X;
-            set => Position = new Point2(value,Position.Y);
-        }
-        public int Y
-        {
-            get => (int)Position.Y;
-            set => Position = new Point2(Position.X, value);
-        }
-
-        public PhysicComponent( Point2 position, Point size,  bool isAffectedByGravity=false)
-        {
-            Position = position;
-            Size = size;
-            IsRigid = true;
-            IsAffectedByGravity = isAffectedByGravity;
-        }
-    }
-
+    
     public class UserInputComponent
     {
         public bool IsLeftDown { get; set; }
@@ -69,6 +44,7 @@ namespace TheCollisionWithEcs
     class CollisionEcsGame : Game
     {
         private World _world;
+        private Aether.Physics2D.Dynamics.World _physWorld;
 
         public static int playerId { get; set; }
 
@@ -80,6 +56,9 @@ namespace TheCollisionWithEcs
             var entity = _world.CreateEntity();
             entity.Attach(new PhysicComponent(position, size, isAffectedByGravity));
             entity.Attach(new VisualComponent(color));
+
+            _physWorld.Add(entity.Get<PhysicComponent>().Body);
+
             return entity;
         }
 
@@ -91,6 +70,10 @@ namespace TheCollisionWithEcs
             entity.Attach(new VisualComponent(color));
             entity.Attach(new UserInputComponent());
             entity.Attach(new PlayerDataComponent());
+
+            entity.Get<PhysicComponent>().Body.FixedRotation = true;
+
+            _physWorld.Add(entity.Get<PhysicComponent>().Body);
 
             return entity;
         }
@@ -112,14 +95,18 @@ namespace TheCollisionWithEcs
         }
         protected override void LoadContent()
         {
+            _physWorld = new Aether.Physics2D.Dynamics.World();
+
             _world = new WorldBuilder()
                 .AddSystem(new InputSystem())
-                .AddSystem(new PhysicSystem())
+                //.AddSystem(new PhysicSystem())
+                .AddSystem(new AetherPhysicSystem(_physWorld))
                 .AddSystem(new RenderSystem(graphics.GraphicsDevice))
                 .Build();
 
             var player = CreatePlayer(new Point2(0, Window.ClientBounds.Height / 2), new Point(50, 50), Color.Yellow);
             playerId = player.Id;
+            player.Get<PlayerDataComponent>().IsJumping = true; //Because its falling at start
 
             CreateBox(new Point2 { X=0, Y = Window.ClientBounds.Height - 10 }, new Point(Window.ClientBounds.Width,10), Color.Aqua);
             CreateBox(new Point2 { X=100, Y = Window.ClientBounds.Height - 200 }, new Point(100,200), Color.Red);
@@ -135,7 +122,6 @@ namespace TheCollisionWithEcs
 
         protected override void Update(GameTime gameTime)
         {
-            
             _world.Update(gameTime);
 
             base.Update(gameTime);
@@ -151,7 +137,7 @@ namespace TheCollisionWithEcs
     }
 
   
-
+    /*
     public class PhysicSystem : EntityUpdateSystem
     {
         private ComponentMapper<PhysicComponent> _physicComponentsMapper;
@@ -219,7 +205,7 @@ namespace TheCollisionWithEcs
                     //Can Player go left?
                     var willCollideWith = physicsComponents.FirstOrDefault(box => box.IsRigid && targetBB.Intersects(box.BoundingBox));
                     if (willCollideWith == null)
-                        player.Get<PhysicComponent>().X = nextX;
+                        player.Get<PhysicComponent>().Position.X = nextX;
                     //else
                     //    player.Get<PhysicComponent>().X = willCollideWith.X + bb.Width;
                 
@@ -273,7 +259,7 @@ namespace TheCollisionWithEcs
             }
         }
     }
-
+    */
 
     //Render System
     public class RenderSystem : EntityDrawSystem
@@ -316,10 +302,11 @@ namespace TheCollisionWithEcs
                 if (!entity.Has<VisualComponent>())
                     continue;
 
-                var bb = entity.Get<PhysicComponent>().BoundingBox;
+                var physComp = entity.Get<PhysicComponent>();
                 var color = entity.Get<VisualComponent>().Color;
 
-                _spriteBatch.Draw(fillTexture, bb , color);
+                //_spriteBatch.Draw(fillTexture, physComp.BoundingBox, null, color, physComp.Body.Rotation, new Vector2(0,0), SpriteEffects.None, 0f);
+                _spriteBatch.Draw(fillTexture, physComp.BoundingBox, null, color, physComp.Body.Rotation, new Vector2(0,0), SpriteEffects.None, 0f);
             }
 
             _spriteBatch.End();

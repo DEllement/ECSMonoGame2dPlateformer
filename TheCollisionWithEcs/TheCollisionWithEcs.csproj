@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Aether.Physics2D.NetStandard" Version="1.4.0" />
     <PackageReference Include="MonoGame.Extended" Version="3.7.0" />
     <PackageReference Include="MonoGame.Extended.Collisions" Version="3.7.0" />
     <PackageReference Include="MonoGame.Extended.Entities" Version="3.7.0" />
