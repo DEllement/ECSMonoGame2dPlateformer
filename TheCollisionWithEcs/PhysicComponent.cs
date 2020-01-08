@@ -7,49 +7,74 @@ using Aether.Physics2D.Dynamics;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended;
 
+using Vector2 = Aether.Physics2D.Common.Maths.Vector2;
+
+
 namespace TheCollisionWithEcs
 {
     public class PhysicComponent
     {
+        public const float physScale = 50.0f;
+
         public Body Body { get; set; }
-        public Aether.Physics2D.Common.Maths.Vector2 Position
-        {
-            get => Body.Position;
-            set => Body.Position = value;
-        }
+        public Body BottomSensor { get; set; }
+        public Rectangle BottomSensorBoundingBox => 
+            new Rectangle((int)Position.X,(int)Position.Y+Size.Y, Size.X, 10);
+
+        public Vector2 Position => Body.Position * physScale;
 
         public Point Size { get; set; }
         public Rectangle BoundingBox => new Rectangle((int)Position.X,(int)Position.Y, Size.X, Size.Y);
         public bool IsRigid { get; set; }
         public bool IsAffectedByGravity { get; set; }
        
-        public PhysicComponent( Point2 position, Point size,  bool isAffectedByGravity=false)
+        public PhysicComponent( Point2 position, Point size, bool isAffectedByGravity=false, bool isRigid=true)
         {
             Size = size;
-            IsRigid = true;
+            IsRigid = isRigid;
             IsAffectedByGravity = isAffectedByGravity;
 
-            var vec2Pos = new Aether.Physics2D.Common.Maths.Vector2(position.X, position.Y);
+            var vec2Pos = new Vector2(position.X, position.Y)/physScale;
            
             Body = new Body();
             Body.CreatePolygon(new Vertices(new[] {
-                new Aether.Physics2D.Common.Maths.Vector2(0f, 0f),
-                new Aether.Physics2D.Common.Maths.Vector2((float)size.X, 0f),
-                new Aether.Physics2D.Common.Maths.Vector2((float)size.X, (float)size.Y),
-                new Aether.Physics2D.Common.Maths.Vector2(0f, (float)size.Y),
-                new Aether.Physics2D.Common.Maths.Vector2(0f, 0f),
+                new Vector2(0f, 0f),
+                new Vector2((float)size.X/physScale, 0f),
+                new Vector2((float)size.X/physScale, (float)size.Y/physScale),
+                new Vector2(0f, (float)size.Y/physScale),
+                new Vector2(0f, 0f),
             }), 1f);
             Body.Position = vec2Pos;
-            Body.Mass = 0.01f;
-
+            Body.Mass = 1.0f;
+            Body.FixedRotation = true;
+            Body.Inertia = 1f;
+        
             if (IsAffectedByGravity)
-                Body.BodyType = BodyType.Dynamic;
+            {
+                Body.BodyType = IsRigid ? BodyType.Dynamic : BodyType.Kinematic;
+                Body.FixedRotation = true;
+            }
             else
                 Body.BodyType = BodyType.Static;
 
             Body.SetRestitution(0.0f);
-            Body.SetFriction(0.5f);
+            Body.SetFriction(0.1f);
+
+            /*if (useBottomSensor)
+            {
+                BottomSensor = new Body();
+                BottomSensor.CreatePolygon(new Vertices(new[] {
+                    new Vector2(0f, (float)size.Y/physScale+0.1f),
+                    new Vector2((float)size.X/physScale, (float)size.Y/physScale+0.1f),
+                    new Vector2((float)size.X/physScale, (float)size.Y/physScale+0.4f),
+                    new Vector2(0f, (float)size.Y/physScale+0.4f),
+                    new Vector2(0f, (float)size.Y/physScale+0.1f),
+                }), 1f);
+                BottomSensor.Position = vec2Pos;
+                BottomSensor.SetIsSensor(true);
+            }*/
         }
+
     }
 
 }
