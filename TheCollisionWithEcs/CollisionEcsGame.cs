@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -10,6 +9,7 @@ using MonoGame.Extended;
 using MonoGame.Extended.Entities;
 using MonoGame.Extended.Entities.Systems;
 using MonoGame.Extended.Sprites;
+using System.Timers;
 
 //http://docs.monogameextended.net/Features/Entities/
 namespace TheCollisionWithEcs
@@ -57,7 +57,7 @@ namespace TheCollisionWithEcs
             entity.Attach(new PhysicComponent(position, size, isAffectedByGravity));
             entity.Attach(new VisualComponent(color));
 
-            _physWorld.Add(entity.Get<PhysicComponent>().Body);
+            _physWorld.AddAsync(entity.Get<PhysicComponent>().Body);
 
             return entity;
         }
@@ -66,14 +66,12 @@ namespace TheCollisionWithEcs
         {
             var entity = _world.CreateEntity();
            
-            entity.Attach(new PhysicComponent(position, size, true));
+            entity.Attach(new PhysicComponent(position, size, true,true));
             entity.Attach(new VisualComponent(color));
             entity.Attach(new UserInputComponent());
             entity.Attach(new PlayerDataComponent());
 
-            entity.Get<PhysicComponent>().Body.FixedRotation = true;
-
-            _physWorld.Add(entity.Get<PhysicComponent>().Body);
+            _physWorld.AddAsync(entity.Get<PhysicComponent>().Body);
 
             return entity;
         }
@@ -85,40 +83,55 @@ namespace TheCollisionWithEcs
         public CollisionEcsGame()
         {
             graphics = new GraphicsDeviceManager(this);
-            
+            graphics.GraphicsProfile = GraphicsProfile.HiDef;
+
             Content.RootDirectory = "Content";
         }
+  
 
         protected override void Initialize()
         {
+            _physWorld = new Aether.Physics2D.Dynamics.World();
+
             base.Initialize();
         }
         protected override void LoadContent()
         {
-            _physWorld = new Aether.Physics2D.Dynamics.World();
-
             _world = new WorldBuilder()
                 .AddSystem(new InputSystem())
-                //.AddSystem(new PhysicSystem())
                 .AddSystem(new AetherPhysicSystem(_physWorld))
                 .AddSystem(new RenderSystem(graphics.GraphicsDevice))
                 .Build();
 
             var player = CreatePlayer(new Point2(0, Window.ClientBounds.Height / 2), new Point(50, 50), Color.Yellow);
             playerId = player.Id;
-            player.Get<PlayerDataComponent>().IsJumping = true; //Because its falling at start
-
-            CreateBox(new Point2 { X=0, Y = Window.ClientBounds.Height - 10 }, new Point(Window.ClientBounds.Width,10), Color.Aqua);
+       
+            //Sample Layout
+            CreateBox(new Point2 { X=0, Y = Window.ClientBounds.Height - 25 }, new Point(Window.ClientBounds.Width,25), Color.Aqua);
             CreateBox(new Point2 { X=100, Y = Window.ClientBounds.Height - 200 }, new Point(100,200), Color.Red);
             CreateBox(new Point2 { X=600, Y = Window.ClientBounds.Height - 100 }, new Point(100,100), Color.Orange);
             CreateBox(new Point2 { X=100, Y = 0 }, new Point(10,10), Color.Indigo, true);
-            CreateBox(new Point2 { X=300, Y = 0 }, new Point(10,10), Color.Indigo, true);
+            CreateBox(new Point2 { X=300, Y = 0 }, new Point(50,50), Color.Indigo, true);
             CreateBox(new Point2 { X=500, Y = 0 }, new Point(10,10), Color.Indigo, true);
             CreateBox(new Point2 { X=550, Y = 0 }, new Point(10,10), Color.Indigo, true);
             CreateBox(new Point2 { X=700, Y = 0 }, new Point(10,10), Color.Indigo, true);
 
+            //Just to test the physic engine...
+            Random rnd = new Random(0);
+            Timer timer = new Timer();
+            timer.Interval = 1000;
+            timer.Elapsed += (sender, args) => 
+            {
+                var e = CreateBox(new Point2 { X=rnd.Next(0,600), Y = 0 }, new Point(rnd.Next(5,30),rnd.Next(5,30)), Color.FromNonPremultiplied(
+                                                                                                                                rnd.Next(0,255),
+                                                                                                                                rnd.Next(0,255),
+                                                                                                                                rnd.Next(0,255),255), true);
+                e.Get<PhysicComponent>().Body.FixedRotation = false;
+            };
+            timer.Start();
             base.LoadContent();
         }
+     
 
         protected override void Update(GameTime gameTime)
         {
@@ -287,14 +300,15 @@ namespace TheCollisionWithEcs
 
             fillTexture = new Texture2D(_graphicsDevice, 1, 1, false, SurfaceFormat.Color);
             fillTexture.SetData<Color>(new Color[] { Color.White });
+
         }
 
+        
         public override void Draw(GameTime gameTime)
         {
             _graphicsDevice.Clear(Color.Black); //This paint the background black
 
             _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-
             foreach (var entityId in ActiveEntities)
             {
                 // draw your entities
@@ -305,9 +319,13 @@ namespace TheCollisionWithEcs
                 var physComp = entity.Get<PhysicComponent>();
                 var color = entity.Get<VisualComponent>().Color;
 
-                //_spriteBatch.Draw(fillTexture, physComp.BoundingBox, null, color, physComp.Body.Rotation, new Vector2(0,0), SpriteEffects.None, 0f);
                 _spriteBatch.Draw(fillTexture, physComp.BoundingBox, null, color, physComp.Body.Rotation, new Vector2(0,0), SpriteEffects.None, 0f);
+                if(physComp.BottomSensor != null)
+                    _spriteBatch.Draw(fillTexture, physComp.BottomSensorBoundingBox, null, Color.BlueViolet, physComp.Body.Rotation, new Vector2(0,0), SpriteEffects.None, 0f);
             }
+
+            //FIXME: declare myFont, make it work
+            //_spriteBatch.DrawString(myFont, "Hello Centered", new Vector2(_graphicsDevice.DisplayMode.Width/2,_graphicsDevice.DisplayMode.Height/2), Color.DarkGray);
 
             _spriteBatch.End();
         }
