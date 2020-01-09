@@ -32,7 +32,7 @@ namespace TheGameProject
             set => Position = new Point2(Position.X, value);
         }
 
-        public BaseClass(Texture2D BoxTexture, Point2 position, Point size, bool isAffectedByGravity = false)
+        public BaseClass(Point2 position, Point size, bool isAffectedByGravity = false)
         {
             Position = position;
             Size = size;
