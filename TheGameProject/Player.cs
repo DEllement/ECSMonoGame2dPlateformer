@@ -23,9 +23,15 @@ namespace TheGameProject
             //PlayerDataComponent
             public bool IsJumping { get; set; }
 
-            public Player(Texture2D boxTexture ,Point2 position, Point size, bool isAffectedByGravity) : base(boxTexture ,position, size, isAffectedByGravity)
+            public Point2 Velocity;
+
+           public float JumpMax;
+
+            public Player(Point2 position, Point size, bool isAffectedByGravity, Point2 velocity, float jumpMax) : base(boxTexture ,position, size, isAffectedByGravity)
             {
                 IsAffectedByGravity = true;
+                Velocity = velocity;
+                JumpMax = jumpMax;
             }
         }
     }

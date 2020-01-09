@@ -14,7 +14,7 @@ namespace TheGameProject
 
 
         //Physic Component\
-        Texture2D boxTexture;
+        public Texture2D BoxTexture;
 
         public Point2 Position { get; set; }
         public Point Size { get; set; }

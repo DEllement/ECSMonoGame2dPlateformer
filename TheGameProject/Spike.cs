@@ -4,43 +4,19 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using MonoGame.Extended;
 
-
-namespace FirstMonoGameApp
+namespace TheGameProject
 {
-    class Spike
+
+    namespace FirstMonoGameApp
     {
-        public Texture2D spike;
-
-        public Vector2 spikePosition;
-
-        public Rectangle SpikeBoundingBox;
-
-        public void initInitialize()
+        class Spike : BaseClass
         {
-            spikePosition.X = 350;
-            spikePosition.Y = 441;
-
-        }
-
-        public void LoadContent(ContentManager content)
-        {
-            spike = content.Load<Texture2D>("pike02");
-            SpikeBoundingBox = new Rectangle((int)spikePosition.X, (int)spikePosition.Y, 6 * spike.Width, 2 * spike.Height);
-        }
-
-
-        public void Draw(SpriteBatch spriteBatch, int x)
-        {
-            spriteBatch.Draw(spike,
-              position: new Vector2(spikePosition.X + x * spike.Width*2, spikePosition.Y), //x,y
-              sourceRectangle: null,
-              color: Color.White,
-              rotation: 0.0f, //deg
-              origin: new Vector2(0, spike.Height),
-              scale: new Vector2(2, 2), //scaleX, scaleY
-              effects: SpriteEffects.None, //Flip the image
-              layerDepth: 0); // z-index
+            public Spike(Texture2D boxTexture, Point2 position, Point size, bool isAffectedByGravity) : base(boxTexture, position, size, isAffectedByGravity)
+            {
+                IsAffectedByGravity = true;
+            }
         }
     }
 }
