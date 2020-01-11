@@ -11,13 +11,45 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="bin\**" />
+    <Compile Remove="obj\**" />
+    <Compile Remove="UnincludedFiles\obj\**" />
+    <EmbeddedResource Remove="bin\**" />
+    <EmbeddedResource Remove="obj\**" />
+    <EmbeddedResource Remove="UnincludedFiles\obj\**" />
+    <None Remove="bin\**" />
+    <None Remove="obj\**" />
+    <None Remove="UnincludedFiles\obj\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="BaseClass.cs" />
+    <Compile Remove="Floor.cs" />
+    <Compile Remove="GreenBox.cs" />
+    <Compile Remove="IncaTile.cs" />
+    <Compile Remove="Player.cs" />
+    <Compile Remove="Spike.cs" />
+    <Compile Remove="UnincludedFiles\BaseClass.cs" />
+    <Compile Remove="UnincludedFiles\Floor.cs" />
+    <Compile Remove="UnincludedFiles\GreenBox.cs" />
+    <Compile Remove="UnincludedFiles\IncaTile.cs" />
+    <Compile Remove="UnincludedFiles\Player.cs" />
+    <Compile Remove="UnincludedFiles\Spike.cs" />
+  </ItemGroup>
   
   <ItemGroup>
+    <PackageReference Include="Aether.Physics2D.NetStandard" Version="1.4.0" />
     <PackageReference Include="MonoGame.Extended" Version="3.7.0" />
     <PackageReference Include="MonoGame.Extended.Collisions" Version="3.7.0" />
     <PackageReference Include="MonoGame.Extended.Entities" Version="3.7.0" />
     <PackageReference Include="MonoGame.Extended.Input" Version="3.7.0" />
-    <PackageReference Include="MonoGame.Framework.DesktopGL.Core" Version="3.8.0.1" />
+    <PackageReference Include="MonoGame.Framework.DesktopGL.Core" Version="3.8.0.2" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="UnincludedFiles\" />
   </ItemGroup>
 
 

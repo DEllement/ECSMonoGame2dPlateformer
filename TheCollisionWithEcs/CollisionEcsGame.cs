@@ -14,6 +14,7 @@ using System.Timers;
 //http://docs.monogameextended.net/Features/Entities/
 namespace TheCollisionWithEcs
 {
+    //TODO: Put that in its own file
     //Components
     public class VisualComponent
     {
@@ -25,7 +26,7 @@ namespace TheCollisionWithEcs
         }
     }
 
-    
+    //TODO: Put that in its own file
     public class UserInputComponent
     {
         public bool IsLeftDown { get; set; }
@@ -34,7 +35,7 @@ namespace TheCollisionWithEcs
         public bool IsBottomDown { get; set; }
         public bool IsSpaceDown { get; set; }
     }
-
+    //TODO: Put that in its own file
     public class PlayerDataComponent
     {
         public int Life { get; set; }
@@ -48,6 +49,8 @@ namespace TheCollisionWithEcs
 
         public static int playerId { get; set; }
 
+
+        //TODO: Mabe create a class with static method for it when will have too many Create function...
         #region EntityFactory
 
         //Entities
@@ -274,6 +277,7 @@ namespace TheCollisionWithEcs
     }
     */
 
+        //TODO: Put that in its own file
     //Render System
     public class RenderSystem : EntityDrawSystem
     {
