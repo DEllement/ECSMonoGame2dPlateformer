@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
 using MonoGame.Extended.Entities;
 using System;
@@ -35,7 +36,7 @@ namespace TheGameProject.Entities
             return entity;
         }
 
-        public Entity CreatePlayer(Point2 position, Point size, Color color)
+        public Entity CreatePlayer(Point2 position, Point size, Texture2D color)
         {
             var entity = _world.CreateEntity();
 

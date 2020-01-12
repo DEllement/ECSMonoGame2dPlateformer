@@ -41,6 +41,8 @@ namespace TheGameProject
         //3. This is called on boot, and its for pre-loading resources (this is for loading Image, Mesh and other external data)
         protected override void LoadContent()
         {
+            Texture2D playerTexture;
+
             _world = new WorldBuilder()
                        .AddSystem(new InputSystem())
                        .AddSystem(new AetherPhysicSystem(_physWorld))
@@ -48,9 +50,8 @@ namespace TheGameProject
                        .Build();
 
             _entityFactory = new EntityFactory(_world, _physWorld);
-
             //TODO: initialize entities here
-            var player = _entityFactory.CreatePlayer(new Point2(0, Window.ClientBounds.Height / 2), new Point(50, 50), Color.Yellow);
+            var player = _entityFactory.CreatePlayer(new Point2(0, Window.ClientBounds.Height / 2), new Point(Content.Load<Texture2D>("idle").Width, Content.Load<Texture2D>("idle").Height), Content.Load<Texture2D>("idle"));
 
             base.LoadContent();
         }

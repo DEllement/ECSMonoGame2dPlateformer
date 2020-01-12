@@ -51,9 +51,9 @@ namespace TheGameProject.System
                     continue;
 
                 var physComp = entity.Get<PhysicComponent>();
-                var color = entity.Get<VisualComponent>().Color;
+                var color = entity.Get<VisualComponent>().SpriteTexture;
 
-                _spriteBatch.Draw(fillTexture, physComp.BoundingBox, null, color, physComp.Body.Rotation, new Vector2(0, 0), SpriteEffects.None, 0f);
+                _spriteBatch.Draw(color, physComp.BoundingBox, null,Color.White, physComp.Body.Rotation, new Vector2(0, 0), SpriteEffects.None, 0f);
                 //if (physComp.BottomSensor != null)
                 //    _spriteBatch.Draw(fillTexture, physComp.BottomSensorBoundingBox, null, Color.BlueViolet, physComp.Body.Rotation, new Vector2(0, 0), SpriteEffects.None, 0f);
             }

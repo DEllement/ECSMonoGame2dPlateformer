@@ -60,19 +60,6 @@ namespace TheCollisionWithEcs
             Body.SetRestitution(0.0f);
             Body.SetFriction(0.1f);
 
-            /*if (useBottomSensor)
-            {
-                BottomSensor = new Body();
-                BottomSensor.CreatePolygon(new Vertices(new[] {
-                    new Vector2(0f, (float)size.Y/physScale+0.1f),
-                    new Vector2((float)size.X/physScale, (float)size.Y/physScale+0.1f),
-                    new Vector2((float)size.X/physScale, (float)size.Y/physScale+0.4f),
-                    new Vector2(0f, (float)size.Y/physScale+0.4f),
-                    new Vector2(0f, (float)size.Y/physScale+0.1f),
-                }), 1f);
-                BottomSensor.Position = vec2Pos;
-                BottomSensor.SetIsSensor(true);
-            }*/
         }
 
     }
