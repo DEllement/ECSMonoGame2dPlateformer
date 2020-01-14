@@ -51,7 +51,10 @@ namespace TheGameProject.System
 
             //Move Right
             if (player.Get<UserInputComponent>().IsRightDown)
+            {
+                Console.WriteLine(player.Get<PhysicComponent>().Position);
                 playerPhys.Body.ApplyForce(new Vector2(2f, 0.0f));
+            }
 
             //Move Left
             if (player.Get<UserInputComponent>().IsLeftDown)

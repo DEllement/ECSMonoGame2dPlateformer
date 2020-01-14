@@ -36,12 +36,12 @@ namespace TheGameProject.Entities
             return entity;
         }
 
-        public Entity CreatePlayer(Point2 position, Point size, Texture2D color)
+        public Entity CreatePlayer(Point2 position, Point size, Texture2D texture)
         {
             var entity = _world.CreateEntity();
 
             entity.Attach(new PhysicComponent(position, size, true, true));
-            entity.Attach(new VisualComponent(color));
+            entity.Attach(new VisualComponent(texture));
             entity.Attach(new UserInputComponent());
             entity.Attach(new PlayerDataComponent(entity.Id)); //WE ALSO Assign the id in the special PlayerDataComponent
             GameSharedVars.PlayerId = entity.Id; //We make it globaly available (cheat)
@@ -50,5 +50,20 @@ namespace TheGameProject.Entities
 
             return entity;
         }
+        public Entity CreateIncaTile(Point2 position, Point size, Texture2D texture)
+        {
+            var entity = _world.CreateEntity();
+
+            entity.Attach(new PhysicComponent(position, size, false, true));
+            entity.Attach(new VisualComponent(texture));
+            entity.Attach(new UserInputComponent());
+            entity.Attach(new PlayerDataComponent(entity.Id)); //WE ALSO Assign the id in the special PlayerDataComponent
+            GameSharedVars.PlayerId = entity.Id; //We make it globaly available (cheat)
+
+            _physWorld.AddAsync(entity.Get<PhysicComponent>().Body);
+
+            return entity;
+        }
+
     }
 }
