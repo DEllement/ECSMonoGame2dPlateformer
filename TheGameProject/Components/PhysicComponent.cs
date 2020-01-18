@@ -16,15 +16,16 @@ namespace TheGameProject.Components
     {
         public const float physScale = 50.0f; //Can change this on slow down the gravity or increase the speed
 
-        public Body Body { get; set; }
-        public Body BottomSensor { get; set; }
-        public Rectangle BottomSensorBoundingBox => 
-            new Rectangle((int)Position.X,(int)Position.Y+Size.Y, Size.X, 10);
-
-        public Vector2 Position => Body.Position * physScale;
-
         public Point Size { get; set; }
-        public Rectangle BoundingBox => new Rectangle((int)Position.X,(int)Position.Y, Size.X, Size.Y);
+
+        public Body Body { get; set; }
+        public Rectangle BottomSensorBoundingBox => 
+            new Rectangle((int)(Body.Position.X*physScale),
+                          (int)((Body.Position.Y*physScale)+Size.Y),
+                          (int)(Size.X),
+                          10); //Need to Adjust
+
+        public Rectangle BoundingBox => new Rectangle((int)Body.Position.X,(int)Body.Position.Y, Size.X, Size.Y);
         public bool IsRigid { get; set; }
         public bool IsAffectedByGravity { get; set; }
        
@@ -45,14 +46,12 @@ namespace TheGameProject.Components
                 new Vector2(0f, 0f),
             }), 1f);
             Body.Position = vec2Pos;
-            Body.Mass = 1.0f;
+            Body.Mass = 2.0f;
             Body.FixedRotation = true;
             Body.Inertia = 1f;
         
-            if (IsAffectedByGravity)
-            {
+            if (IsAffectedByGravity) {
                 Body.BodyType = IsRigid ? BodyType.Dynamic : BodyType.Kinematic;
-                Body.FixedRotation = true;
             }
             else
                 Body.BodyType = BodyType.Static;

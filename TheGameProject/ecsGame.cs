@@ -51,8 +51,11 @@ namespace TheGameProject
 
             _entityFactory = new EntityFactory(_world, _physWorld);
             //TODO: initialize entities here
-            var player = _entityFactory.CreatePlayer(new Point2(0, Window.ClientBounds.Height/3), new Point(Content.Load<Texture2D>("idle").Width, Content.Load<Texture2D>("idle").Height), Content.Load<Texture2D>("idle"));
-            var incaTile1 = _entityFactory.CreateIncaTile(new Point2(0, Window.ClientBounds.Height / 2), new Point(Content.Load<Texture2D>("floor").Width/2, Content.Load<Texture2D>("floor").Height/2), Content.Load<Texture2D>("floor"));
+            var player =    _entityFactory.CreatePlayer(new Point2(0, Window.ClientBounds.Height/3), new Point(Content.Load<Texture2D>("idle").Width, Content.Load<Texture2D>("idle").Height), Content.Load<Texture2D>("idle"));
+            var incaTile1 = _entityFactory.CreateIncaTile(new Point2(0, Window.ClientBounds.Height / 2), new Point(Content.Load<Texture2D>("floor").Width, Content.Load<Texture2D>("floor").Height), Content.Load<Texture2D>("floor"));
+
+            var test = _world.CreateEntity();
+
 
             base.LoadContent();
         }
