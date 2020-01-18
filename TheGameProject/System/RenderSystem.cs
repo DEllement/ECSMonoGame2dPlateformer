@@ -48,10 +48,37 @@ namespace TheGameProject.System
                 var entity = GetEntity(entityId);
                 var t = entity.Get<TransformComponent>();
 
-                var dest = new Rectangle( t.Position.ToPoint(), new Point( (int)(entity.Get<VisualComponent>().SpriteTexture.Width*t.Scale.X),
-                                                                           (int)(entity.Get<VisualComponent>().SpriteTexture.Height*t.Scale.Y) )); //TODO: scale size...
+                Rectangle dest;
+                switch (entity.Get<VisualComponent>().VisualComponentType)
+                {
+                    /*case VisualComponentType.Color: 
 
-                _spriteBatch.Draw(entity.Get<VisualComponent>().SpriteTexture, dest, null,Color.White, t.Rotation, new Vector2(0, 0), SpriteEffects.None, 0f);
+                        _spriteBatch.Draw(fillTexture, t.Position, null,entity.Get<VisualComponent>().Color, t.Rotation, new Vector2(0, 0), SpriteEffects.None, 0f);
+                        break;*/
+                    case VisualComponentType.Texture:
+                        dest = new Rectangle( t.Position.ToPoint(), new Point( (int)(entity.Get<VisualComponent>().SpriteTexture.Width*t.Scale.X),
+                                                                               (int)(entity.Get<VisualComponent>().SpriteTexture.Height*t.Scale.Y) )); //TODO: scale size...
+                        _spriteBatch.Draw(entity.Get<VisualComponent>().SpriteTexture, dest, null,Color.White, t.Rotation, new Vector2(0, 0), SpriteEffects.None, 0f);
+                        break;
+                    case VisualComponentType.Sprite:
+                        dest = new Rectangle( t.Position.ToPoint(), new Point( (int)(entity.Get<VisualComponent>().SpriteTexture.Width*t.Scale.X),
+                                                                               (int)(entity.Get<VisualComponent>().SpriteTexture.Height*t.Scale.Y) )); //TODO: scale size...
+                        _spriteBatch.Draw(entity.Get<VisualComponent>().SpriteTexture, dest, null, entity.Get<VisualComponent>().Sprite.Color, t.Rotation, entity.Get<VisualComponent>().Sprite.Origin, entity.Get<VisualComponent>().Sprite.Effect, entity.Get<VisualComponent>().Sprite.Depth );
+                        break;
+                    case VisualComponentType.SpritesList:
+
+                        entity.Get<VisualComponent>().SpritesList.ForEach(v =>
+                        {
+                            var rect = new Rectangle((int)(v.position.X*t.Scale.X + t.Position.X),
+                                                     (int)(v.position.Y*t.Scale.Y + t.Position.Y),
+                                                     (int)(v.size.X+t.Scale.X),
+                                                     (int)(v.size.Y+t.Scale.Y));
+                            _spriteBatch.Draw(v.sprite.TextureRegion.Texture, rect , null,Color.White, t.Rotation, new Vector2(0, 0), SpriteEffects.None, 0f);
+                        });
+                        break;
+                }
+
+                
                 
                 //UnComment to see the Bottom Sensor of the player
                 /*if (entity.Has<PlayerDataComponent>())

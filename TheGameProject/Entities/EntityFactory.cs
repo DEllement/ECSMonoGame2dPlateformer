@@ -5,6 +5,8 @@ using MonoGame.Extended.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using MonoGame.Extended.Sprites;
+using MonoGame.Extended.TextureAtlases;
 using TheGameProject.Components;
 
 namespace TheGameProject.Entities
@@ -52,10 +54,7 @@ namespace TheGameProject.Entities
             var entity = _world.CreateEntity();
 
             entity.Attach(new TransformComponent(position, 0, scale));
-            entity.Attach(new PhysicComponent(position, size, false, true));
             entity.Attach(new VisualComponent(texture));
-
-            _physWorld.AddAsync(entity.Get<PhysicComponent>().Body);
 
             return entity;
         }
@@ -65,10 +64,34 @@ namespace TheGameProject.Entities
             var entity = _world.CreateEntity();
 
             entity.Attach(new TransformComponent(position, 0, Vector2.One));
-            entity.Attach(new PhysicComponent(position, size, false, true));
             entity.Attach(new VisualComponent(texture));
 
             return entity;
+        }
+
+        public Entity CreateFloor(Point2 position, Point size, Texture2D texture)
+        {
+            var floor = _world.CreateEntity();
+            floor.Attach(new TransformComponent(position, 0, Vector2.One));
+
+            var sprites = new List<ChildSprite>();
+            var incaTile1Scale = new Vector2(.25f, .25f);
+            var incaTile1Size = new Point((int)(texture.Width * incaTile1Scale.X), (int)(texture.Height * incaTile1Scale.X));
+            var howManyTileToFileScreen = size.X / incaTile1Size.X;
+            for (var i = 0; i < howManyTileToFileScreen; i++)
+            {
+                sprites.Add(new ChildSprite(new Sprite(texture),
+                                            new Point2(i * (incaTile1Size.X), 0f),
+                                            incaTile1Size));
+            }
+            floor.Attach(new VisualComponent(sprites));
+
+            //Floor Physic
+            var floorPhysic = _world.CreateEntity();
+            floorPhysic.Attach(new PhysicComponent(position, new Point( size.X, incaTile1Size.Y )));
+            _physWorld.AddAsync(floorPhysic.Get<PhysicComponent>().Body);
+
+            return floor;
         }
     }
 }

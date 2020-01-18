@@ -50,16 +50,16 @@ namespace TheGameProject.System
 
             //Move Right
             if (player.Get<UserInputComponent>().IsRightDown)
-                playerPhys.Body.ApplyForce(new Vector2(10f, 0.0f));
+                playerPhys.Body.ApplyForce(new Vector2(2f, 0.0f));
 
             //Move Left
             if (player.Get<UserInputComponent>().IsLeftDown)
-                playerPhys.Body.ApplyForce(new Vector2(-10f, 0.0f));
+                playerPhys.Body.ApplyForce(new Vector2(-2f, 0.0f));
 
             // Check if the player is currently jump
             foreach (var physicComponent in _physicComponents.Components)
             {
-                if (physicComponent != playerPhys && physicComponent.BoundingBox.Intersects(playerPhys.BottomSensorBoundingBox))
+                if (physicComponent != null && physicComponent != playerPhys && physicComponent.BoundingBox.Intersects(playerPhys.BottomSensorBoundingBox))
                 {
                     player.Get<PlayerDataComponent>().IsJumping = false;
                     break;
