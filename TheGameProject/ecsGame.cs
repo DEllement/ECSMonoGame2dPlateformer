@@ -11,6 +11,7 @@ using MonoGame.Extended;
 using System.Timers;
 using TheGameProject.System;
 using TheGameProject.Entities;
+using TheGameProject.Components;
 
 namespace TheGameProject
 {
@@ -41,7 +42,9 @@ namespace TheGameProject
         //3. This is called on boot, and its for pre-loading resources (this is for loading Image, Mesh and other external data)
         protected override void LoadContent()
         {
-            Texture2D playerTexture;
+            var playerIdleTexture = Content.Load<Texture2D>("idle");
+            var incaTile1Texture = Content.Load<Texture2D>("floor");
+
 
             _world = new WorldBuilder()
                        .AddSystem(new InputSystem())
@@ -50,17 +53,26 @@ namespace TheGameProject
                        .Build();
 
             _entityFactory = new EntityFactory(_world, _physWorld);
-            //TODO: initialize entities here
-<<<<<<< HEAD
-            var player    = _entityFactory.CreatePlayer  (new Point2(0, Window.ClientBounds.Height/3), 
-                                                          new Point(Content.Load<Texture2D>("idle").Width*2, 
-                                                          Content.Load<Texture2D>("idle").Height*2), 
-                                                          Content.Load<Texture2D>("idle"));
-            var incaTile1 = _entityFactory.CreateIncaTile(new Point2(-100, Window.ClientBounds.Height- Content.Load<Texture2D>("floor").Height / 4), 
-                                                          new Point(Content.Load<Texture2D>("floor").Width*12, 
-                                                          Content.Load<Texture2D>("floor").Height/4), 
-                                                          Content.Load<Texture2D>("floor"));
-            var incaBox1  = _entityFactory.CreateIncaTile(new Point2(300, Window.ClientBounds.Height - Content.Load<Texture2D>("floor").Height/4- Content.Load<Texture2D>("inca_tile01").Height*2),
+
+           
+
+            //TODO: Load Texture Once
+
+            var player = _entityFactory.CreatePlayer(new Point2(0, Window.ClientBounds.Height / 3), new Point(playerIdleTexture.Width, playerIdleTexture.Height), playerIdleTexture);
+            //Floor
+            var incaTile1Scale = new Vector2(.25f, .25f);
+            var incaTile1Size = new Point((int)(incaTile1Texture.Width * incaTile1Scale.X), (int)(incaTile1Texture.Height * incaTile1Scale.X));
+            var howManyTileToFileScreen = Window.ClientBounds.Width / incaTile1Size.X;
+            for (var i = 0; i < howManyTileToFileScreen; i++)
+            {
+                var incaTile1 = _entityFactory.CreateIncaTile(new Point2(i * (incaTile1Texture.Width* incaTile1Scale.X), Window.ClientBounds.Height - incaTile1Texture.Height * incaTile1Scale.Y),
+                                                              incaTile1Size,
+                                                              incaTile1Texture,
+                                                              incaTile1Scale);
+               
+            }
+
+            /*var incaBox1  = _entityFactory.CreateIncaTile(new Point2(300, Window.ClientBounds.Height - Content.Load<Texture2D>("floor").Height/4- Content.Load<Texture2D>("inca_tile01").Height*2),
                                                           new Point(Content.Load<Texture2D>("inca_tile01").Width*2, Content.Load<Texture2D>("inca_tile01").Height*2),
                                                           Content.Load<Texture2D>("inca_tile01"));
             var incaBox2  = _entityFactory.CreateIncaTile(new Point2(550, Window.ClientBounds.Height - Content.Load<Texture2D>("floor").Height / 4 - Content.Load<Texture2D>("inca_tile01").Height*2),
@@ -74,14 +86,8 @@ namespace TheGameProject
                                                           Content.Load<Texture2D>("pike02"));
             var spike3    = _entityFactory.CreateSpike   (new Point2(300 + Content.Load<Texture2D>("inca_tile01").Width * 2*3, Window.ClientBounds.Height - Content.Load<Texture2D>("floor").Height / 4 - Content.Load<Texture2D>("inca_tile01").Height*2),
                                                           new Point(Content.Load<Texture2D>("inca_tile01").Width * 2, Content.Load<Texture2D>("inca_tile01").Height*2),
-                                                          Content.Load<Texture2D>("pike02"));
-=======
-            var player =    _entityFactory.CreatePlayer(new Point2(0, Window.ClientBounds.Height/3), new Point(Content.Load<Texture2D>("idle").Width, Content.Load<Texture2D>("idle").Height), Content.Load<Texture2D>("idle"));
-            var incaTile1 = _entityFactory.CreateIncaTile(new Point2(0, Window.ClientBounds.Height / 2), new Point(Content.Load<Texture2D>("floor").Width, Content.Load<Texture2D>("floor").Height), Content.Load<Texture2D>("floor"));
+                                                          Content.Load<Texture2D>("pike02"));*/
 
-            var test = _world.CreateEntity();
-
->>>>>>> 3164fb24271e0740b6f9ee8632afd19923d8fd97
 
             base.LoadContent();
         }

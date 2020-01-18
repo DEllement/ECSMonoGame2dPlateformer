@@ -45,28 +45,31 @@ namespace TheGameProject.System
         {
             delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            var player = GetEntity(_playerDatas.Components[0].PlayerId); 
+            var player = GetEntity(_playerDatas.Components[0].PlayerId);
             var playerPhys = player.Get<PhysicComponent>();
 
             //Move Right
             if (player.Get<UserInputComponent>().IsRightDown)
-                playerPhys.Body.ApplyForce(new Vector2(2f, 0.0f));
+                playerPhys.Body.ApplyForce(new Vector2(10f, 0.0f));
 
             //Move Left
             if (player.Get<UserInputComponent>().IsLeftDown)
-                playerPhys.Body.ApplyForce(new Vector2(-2f, 0.0f));
+                playerPhys.Body.ApplyForce(new Vector2(-10f, 0.0f));
 
             // Check if the player is currently jump
-            foreach (var physicComponent in _physicComponents.Components){
-                if (physicComponent != playerPhys && physicComponent.BoundingBox.Intersects(playerPhys.BottomSensorBoundingBox)){
+            foreach (var physicComponent in _physicComponents.Components)
+            {
+                if (physicComponent != playerPhys && physicComponent.BoundingBox.Intersects(playerPhys.BottomSensorBoundingBox))
+                {
                     player.Get<PlayerDataComponent>().IsJumping = false;
                     break;
                 }
             }
 
             // Do Jump if possible
-            if (!player.Get<PlayerDataComponent>().IsJumping && player.Get<UserInputComponent>().IsSpaceDown){
-                playerPhys.Body.ApplyLinearImpulse(new Vector2(0f, -3f));
+            if (!player.Get<PlayerDataComponent>().IsJumping && player.Get<UserInputComponent>().IsSpaceDown)
+            {
+                playerPhys.Body.ApplyLinearImpulse(new Vector2(0f, -2f));
                 player.Get<PlayerDataComponent>().IsJumping = true;
             }
 
@@ -78,7 +81,7 @@ namespace TheGameProject.System
                 var e = GetEntity(entityId);
 
                 var newPos = e.Get<PhysicComponent>().Body.Position * PhysicComponent.physScale;
-                
+
                 e.Get<TransformComponent>().Position = new Microsoft.Xna.Framework.Vector2(newPos.X, newPos.Y);
                 e.Get<TransformComponent>().Rotation = e.Get<PhysicComponent>().Body.Rotation;
             }

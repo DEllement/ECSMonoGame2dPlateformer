@@ -52,14 +52,16 @@ namespace TheGameProject.System
                                                                            (int)(entity.Get<VisualComponent>().SpriteTexture.Height*t.Scale.Y) )); //TODO: scale size...
 
                 _spriteBatch.Draw(entity.Get<VisualComponent>().SpriteTexture, dest, null,Color.White, t.Rotation, new Vector2(0, 0), SpriteEffects.None, 0f);
-                if (entity.Has<PlayerDataComponent>())
+                
+                //UnComment to see the Bottom Sensor of the player
+                /*if (entity.Has<PlayerDataComponent>())
                 {
                     Console.WriteLine(entity.Get<PhysicComponent>().BottomSensorBoundingBox);
 
                     _spriteBatch.Draw(fillTexture, entity.Get<PhysicComponent>().BottomSensorBoundingBox, null,
                         Color.BlueViolet, entity.Get<PhysicComponent>().Body.Rotation, new Vector2(0, 0),
                         SpriteEffects.None, 0f);
-                }
+                }*/
             }
 
             //FIXME: declare myFont, make it work

@@ -41,17 +41,17 @@ namespace TheGameProject.Entities
             entity.Attach(new PhysicComponent(position, new Point((int)(size.X*scale), (int)(size.Y*scale)), true, true));
             entity.Attach(new VisualComponent(texture));
             entity.Attach(new UserInputComponent());
-            entity.Attach(new PlayerDataComponent(entity.Id)); //WE ALSO Assign the id in the special PlayerDataComponent
+            entity.Attach(new PlayerDataComponent(entity.Id)); //WE assign the id in the special PlayerDataComponent
 
             _physWorld.AddAsync(entity.Get<PhysicComponent>().Body);
 
             return entity;
         }
-        public Entity CreateIncaTile(Point2 position, Point size, Texture2D texture)
+        public Entity CreateIncaTile(Point2 position, Point size, Texture2D texture, Vector2 scale)
         {
             var entity = _world.CreateEntity();
 
-            entity.Attach(new TransformComponent(position, 0, Vector2.One));
+            entity.Attach(new TransformComponent(position, 0, scale));
             entity.Attach(new PhysicComponent(position, size, false, true));
             entity.Attach(new VisualComponent(texture));
 
@@ -60,5 +60,15 @@ namespace TheGameProject.Entities
             return entity;
         }
 
+        public Entity CreateSpike(Point2 position, Point size, Texture2D texture)
+        {
+            var entity = _world.CreateEntity();
+
+            entity.Attach(new TransformComponent(position, 0, Vector2.One));
+            entity.Attach(new PhysicComponent(position, size, false, true));
+            entity.Attach(new VisualComponent(texture));
+
+            return entity;
+        }
     }
 }
