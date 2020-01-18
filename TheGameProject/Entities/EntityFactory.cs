@@ -55,6 +55,9 @@ namespace TheGameProject.Entities
 
             entity.Attach(new TransformComponent(position, 0, scale));
             entity.Attach(new VisualComponent(texture));
+            entity.Attach(new PhysicComponent(position, new Point((int)(size.X * scale.X), (int)(size.Y * scale.Y)), false, true));
+
+            _physWorld.AddAsync(entity.Get<PhysicComponent>().Body); //Important
 
             return entity;
         }
