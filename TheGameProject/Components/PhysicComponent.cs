@@ -25,7 +25,7 @@ namespace TheGameProject.Components
                           (int)(Size.X),
                           10); //Need to Adjust
 
-        public Rectangle BoundingBox => new Rectangle((int)Body.Position.X,(int)Body.Position.Y, Size.X, Size.Y);
+        public Rectangle BoundingBox => new Rectangle((int)(Body.Position.X*physScale),(int)(Body.Position.Y*physScale), Size.X, Size.Y);
         public bool IsRigid { get; set; }
         public bool IsAffectedByGravity { get; set; }
        
