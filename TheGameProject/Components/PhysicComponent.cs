@@ -14,7 +14,7 @@ namespace TheGameProject.Components
 {
     public class PhysicComponent
     {
-        public const float physScale = 50.0f; //Can change this on slow down the gravity or increase the speed
+        public const float physScale = 60.0f; //Can change this on slow down the gravity or increase the speed
 
         public Body Body { get; set; }
         public Body BottomSensor { get; set; }
@@ -28,7 +28,7 @@ namespace TheGameProject.Components
         public bool IsRigid { get; set; }
         public bool IsAffectedByGravity { get; set; }
        
-        public PhysicComponent( Point2 position, Point size, bool isAffectedByGravity=false, bool isRigid=true)
+        public PhysicComponent( Point2 position, Point size, bool isAffectedByGravity=false, bool isRigid=false)
         {
             Size = size;
             IsRigid = isRigid;

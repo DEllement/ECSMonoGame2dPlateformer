@@ -58,12 +58,24 @@ namespace TheGameProject.Entities
             entity.Attach(new VisualComponent(texture));
             entity.Attach(new UserInputComponent());
             entity.Attach(new PlayerDataComponent(entity.Id)); //WE ALSO Assign the id in the special PlayerDataComponent
-            GameSharedVars.PlayerId = entity.Id; //We make it globaly available (cheat)
 
             _physWorld.AddAsync(entity.Get<PhysicComponent>().Body);
 
             return entity;
         }
 
+        public Entity CreateSpike(Point2 position, Point size, Texture2D texture)
+        {
+            var entity = _world.CreateEntity();
+
+            entity.Attach(new PhysicComponent(position, size, false, false));
+            entity.Attach(new VisualComponent(texture));
+            entity.Attach(new UserInputComponent());
+            entity.Attach(new PlayerDataComponent(entity.Id)); //WE ALSO Assign the id in the special PlayerDataComponent
+
+            _physWorld.AddAsync(entity.Get<PhysicComponent>().Body);
+
+            return entity;
+        }
     }
 }

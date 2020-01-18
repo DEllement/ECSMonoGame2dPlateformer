@@ -38,6 +38,10 @@
     <Compile Remove="UnincludedFiles\Player.cs" />
     <Compile Remove="UnincludedFiles\Spike.cs" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="C:\Users\mrsno\source\repos\lessonwithdanymg\TheGameProject\Content\bin\RedHeart.xnb" />
+  </ItemGroup>
   
   <ItemGroup>
     <PackageReference Include="Aether.Physics2D.NetStandard" Version="1.4.0" />

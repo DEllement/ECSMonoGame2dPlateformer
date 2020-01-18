@@ -52,13 +52,15 @@ namespace TheGameProject.System
             //Move Right
             if (player.Get<UserInputComponent>().IsRightDown)
             {
-                Console.WriteLine(player.Get<PhysicComponent>().Position);
-                playerPhys.Body.ApplyForce(new Vector2(2f, 0.0f));
+                playerPhys.Body.ApplyForce(new Vector2(8f, 0.0f));
             }
 
             //Move Left
             if (player.Get<UserInputComponent>().IsLeftDown)
-                playerPhys.Body.ApplyForce(new Vector2(-2f, 0.0f));
+            {
+                Console.WriteLine(111);
+                playerPhys.Body.ApplyForce(new Vector2(-8f, 0.0f));
+            }
 
             // Check if the player is currently jump
             foreach (var physicComponent in _physicComponentsMapper.Components)
@@ -72,7 +74,7 @@ namespace TheGameProject.System
             // Do Jump if possible
             if (!player.Get<PlayerDataComponent>().IsJumping && player.Get<UserInputComponent>().IsSpaceDown)
             {
-                playerPhys.Body.ApplyLinearImpulse(new Vector2(0f, -3f));
+                playerPhys.Body.ApplyLinearImpulse(new Vector2(0f, -2.5f));
                 player.Get<PlayerDataComponent>().IsJumping = true;
             }
 

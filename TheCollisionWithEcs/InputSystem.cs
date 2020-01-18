@@ -24,7 +24,7 @@ namespace TheCollisionWithEcs
             player.Get<UserInputComponent>().IsRightDown = Keyboard.GetState().IsKeyDown(Keys.D);
             player.Get<UserInputComponent>().IsUpDown = Keyboard.GetState().IsKeyDown(Keys.W);
             player.Get<UserInputComponent>().IsBottomDown = Keyboard.GetState().IsKeyDown(Keys.S);
-            player.Get<UserInputComponent>().IsSpaceDown = Keyboard.GetState().IsKeyDown(Keys.Space);
+            player.Get<UserInputComponent>().IsSpaceDown = Keyboard.GetState().IsKeyDown(Keys.W);
 
         }
     }
