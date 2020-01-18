@@ -29,7 +29,9 @@ namespace TheGameProject
         {
             graphics = new GraphicsDeviceManager(this);
             graphics.GraphicsProfile = GraphicsProfile.HiDef;
+            graphics.SynchronizeWithVerticalRetrace = false ;
             Content.RootDirectory = "Content";
+            IsFixedTimeStep = false;
         }
 
         //2. This is the Game Object Init Method, init variables here if needed....

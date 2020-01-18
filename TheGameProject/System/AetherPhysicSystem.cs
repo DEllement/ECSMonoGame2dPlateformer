@@ -26,6 +26,9 @@ namespace TheGameProject.System
 
         private World _world;
 
+        private const float MAX_SPEED = 5f;
+        private const float JUMP_FORCE = 1.2f;
+
         public AetherPhysicSystem(World world) : base(Aspect.All(typeof(PhysicComponent), typeof(TransformComponent)))
         {
             _world = world;
@@ -47,21 +50,22 @@ namespace TheGameProject.System
 
             var player = GetEntity(_playerDatas.Components[0].PlayerId);
             var playerPhys = player.Get<PhysicComponent>();
-
+            
             //Move Right
-            if (player.Get<UserInputComponent>().IsRightDown)
-                playerPhys.Body.ApplyForce(new Vector2(2f, 0.0f));
+            if (player.Get<UserInputComponent>().IsRightDown && playerPhys.Body.LinearVelocity.X < MAX_SPEED)
+                playerPhys.Body.ApplyForce(new Vector2(MAX_SPEED, 0.0f));
 
             //Move Left
-            if (player.Get<UserInputComponent>().IsLeftDown)
-                playerPhys.Body.ApplyForce(new Vector2(-2f, 0.0f));
+            if (player.Get<UserInputComponent>().IsLeftDown && playerPhys.Body.LinearVelocity.X > -MAX_SPEED)
+                playerPhys.Body.ApplyForce(new Vector2(-MAX_SPEED, 0.0f));
 
             // Check if the player is currently jump
             foreach (var physicComponent in _physicComponents.Components)
             {
                 if (physicComponent != null && physicComponent != playerPhys && physicComponent.BoundingBox.Intersects(playerPhys.BottomSensorBoundingBox))
                 {
-                    player.Get<PlayerDataComponent>().IsJumping = false;
+                    if(playerPhys.Body.LinearVelocity.Y == 0.0f)
+                        player.Get<PlayerDataComponent>().IsJumping = false;
                     break;
                 }
             }
@@ -69,11 +73,12 @@ namespace TheGameProject.System
             // Do Jump if possible
             if (!player.Get<PlayerDataComponent>().IsJumping && player.Get<UserInputComponent>().IsSpaceDown)
             {
-                playerPhys.Body.ApplyLinearImpulse(new Vector2(0f, -2f));
+                playerPhys.Body.ApplyLinearImpulse(new Vector2(0f, -JUMP_FORCE));
                 player.Get<PlayerDataComponent>().IsJumping = true;
             }
 
             _world.Step(delta);
+         
 
             //Update All Transform Component
             foreach (var entityId in ActiveEntities)
