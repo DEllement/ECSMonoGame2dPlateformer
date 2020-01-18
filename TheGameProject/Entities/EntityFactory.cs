@@ -87,9 +87,8 @@ namespace TheGameProject.Entities
             floor.Attach(new VisualComponent(sprites));
 
             //Floor Physic
-            var floorPhysic = _world.CreateEntity();
-            floorPhysic.Attach(new PhysicComponent(position, new Point( size.X, incaTile1Size.Y )));
-            _physWorld.AddAsync(floorPhysic.Get<PhysicComponent>().Body);
+            floor.Attach(new PhysicComponent(position, new Point( size.X, incaTile1Size.Y )));
+            _physWorld.AddAsync(floor.Get<PhysicComponent>().Body);
 
             return floor;
         }
