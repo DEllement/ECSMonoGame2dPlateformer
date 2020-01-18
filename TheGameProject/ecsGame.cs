@@ -51,6 +51,7 @@ namespace TheGameProject
 
             _entityFactory = new EntityFactory(_world, _physWorld);
             //TODO: initialize entities here
+<<<<<<< HEAD
             var player    = _entityFactory.CreatePlayer  (new Point2(0, Window.ClientBounds.Height/3), 
                                                           new Point(Content.Load<Texture2D>("idle").Width*2, 
                                                           Content.Load<Texture2D>("idle").Height*2), 
@@ -74,6 +75,13 @@ namespace TheGameProject
             var spike3    = _entityFactory.CreateSpike   (new Point2(300 + Content.Load<Texture2D>("inca_tile01").Width * 2*3, Window.ClientBounds.Height - Content.Load<Texture2D>("floor").Height / 4 - Content.Load<Texture2D>("inca_tile01").Height*2),
                                                           new Point(Content.Load<Texture2D>("inca_tile01").Width * 2, Content.Load<Texture2D>("inca_tile01").Height*2),
                                                           Content.Load<Texture2D>("pike02"));
+=======
+            var player =    _entityFactory.CreatePlayer(new Point2(0, Window.ClientBounds.Height/3), new Point(Content.Load<Texture2D>("idle").Width, Content.Load<Texture2D>("idle").Height), Content.Load<Texture2D>("idle"));
+            var incaTile1 = _entityFactory.CreateIncaTile(new Point2(0, Window.ClientBounds.Height / 2), new Point(Content.Load<Texture2D>("floor").Width, Content.Load<Texture2D>("floor").Height), Content.Load<Texture2D>("floor"));
+
+            var test = _world.CreateEntity();
+
+>>>>>>> 3164fb24271e0740b6f9ee8632afd19923d8fd97
 
             base.LoadContent();
         }

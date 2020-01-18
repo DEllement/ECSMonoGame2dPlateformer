@@ -9,11 +9,6 @@ using TheGameProject.Components;
 
 namespace TheGameProject.Entities
 {
-    public class GameSharedVars { //GameSingleton
-        public static int PlayerId;
-    }
-
-
     class EntityFactory
     {
         private World _world;
@@ -28,6 +23,7 @@ namespace TheGameProject.Entities
         public Entity CreateBox(Point2 position, Point size, Color color, bool isAffectedByGravity = false)
         {
             var entity = _world.CreateEntity();
+            entity.Attach(new TransformComponent(position, 0, Vector2.One));
             entity.Attach(new PhysicComponent(position, size, isAffectedByGravity));
             entity.Attach(new VisualComponent(color));
 
@@ -38,13 +34,14 @@ namespace TheGameProject.Entities
 
         public Entity CreatePlayer(Point2 position, Point size, Texture2D texture)
         {
-            var entity = _world.CreateEntity();
+            var scale = 2.0f;
 
-            entity.Attach(new PhysicComponent(position, size, true, true));
+            var entity = _world.CreateEntity();
+            entity.Attach(new TransformComponent(position, 0, new Vector2(scale,scale)));
+            entity.Attach(new PhysicComponent(position, new Point((int)(size.X*scale), (int)(size.Y*scale)), true, true));
             entity.Attach(new VisualComponent(texture));
             entity.Attach(new UserInputComponent());
             entity.Attach(new PlayerDataComponent(entity.Id)); //WE ALSO Assign the id in the special PlayerDataComponent
-            GameSharedVars.PlayerId = entity.Id; //We make it globaly available (cheat)
 
             _physWorld.AddAsync(entity.Get<PhysicComponent>().Body);
 
@@ -54,28 +51,14 @@ namespace TheGameProject.Entities
         {
             var entity = _world.CreateEntity();
 
+            entity.Attach(new TransformComponent(position, 0, Vector2.One));
             entity.Attach(new PhysicComponent(position, size, false, true));
             entity.Attach(new VisualComponent(texture));
-            entity.Attach(new UserInputComponent());
-            entity.Attach(new PlayerDataComponent(entity.Id)); //WE ALSO Assign the id in the special PlayerDataComponent
 
             _physWorld.AddAsync(entity.Get<PhysicComponent>().Body);
 
             return entity;
         }
 
-        public Entity CreateSpike(Point2 position, Point size, Texture2D texture)
-        {
-            var entity = _world.CreateEntity();
-
-            entity.Attach(new PhysicComponent(position, size, false, false));
-            entity.Attach(new VisualComponent(texture));
-            entity.Attach(new UserInputComponent());
-            entity.Attach(new PlayerDataComponent(entity.Id)); //WE ALSO Assign the id in the special PlayerDataComponent
-
-            _physWorld.AddAsync(entity.Get<PhysicComponent>().Body);
-
-            return entity;
-        }
     }
 }
