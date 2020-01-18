@@ -46,9 +46,9 @@ namespace TheGameProject.Components
                 new Vector2(0f, 0f),
             }), 1f);
             Body.Position = vec2Pos;
-            Body.Mass = 1.0f;
+            //Body.Mass = 1.0f;
             Body.FixedRotation = true;
-            Body.Inertia = 1f;
+           // Body.Inertia = 1f;
 
             if (IsAffectedByGravity)
             {
@@ -57,9 +57,8 @@ namespace TheGameProject.Components
             else
                 Body.BodyType = BodyType.Static;
 
-            Body.SetRestitution(0.0f);
-            Body.SetFriction(0.05f);
-
+            //Body.SetRestitution(0.0f);
+            Body.SetFriction(0.5f);
         }
 
     }
