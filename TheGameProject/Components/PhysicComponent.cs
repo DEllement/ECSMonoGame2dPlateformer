@@ -58,7 +58,7 @@ namespace TheGameProject.Components
                 Body.BodyType = BodyType.Static;
 
             //Body.SetRestitution(0.0f);
-            Body.SetFriction(0.5f);
+            Body.SetFriction(1f);
         }
 
     }

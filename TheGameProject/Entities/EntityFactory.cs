@@ -43,7 +43,7 @@ namespace TheGameProject.Entities
             entity.Attach(new PhysicComponent(position, new Point((int)(size.X*scale), (int)(size.Y*scale)), true, true));
             entity.Attach(new VisualComponent(texture));
             entity.Attach(new UserInputComponent());
-            entity.Attach(new PlayerDataComponent(entity.Id)); //WE assign the id in the special PlayerDataComponent
+            entity.Attach(new PlayerDataComponent(entity.Id,0,1,0,0,0)); //WE assign the id in the special PlayerDataComponent
 
             _physWorld.AddAsync(entity.Get<PhysicComponent>().Body);
 
@@ -55,22 +55,41 @@ namespace TheGameProject.Entities
 
             entity.Attach(new TransformComponent(position, 0, scale));
             entity.Attach(new VisualComponent(texture));
-            entity.Attach(new PhysicComponent(position, new Point((int)(size.X * scale.X), (int)(size.Y * scale.Y)), false, true));
+            entity.Attach(new PhysicComponent(position, new Point((int)(size.X), (int)(size.Y)), false, true));
 
             _physWorld.AddAsync(entity.Get<PhysicComponent>().Body); //Important
 
             return entity;
         }
 
-        public Entity CreateSpike(Point2 position, Point size, Texture2D texture)
+        public Entity CreatePlate(Point2 position, Point size, Texture2D texture, Vector2 scale)
         {
             var entity = _world.CreateEntity();
 
-            entity.Attach(new TransformComponent(position, 0, Vector2.One));
+            entity.Attach(new TransformComponent(position, 0, scale));
             entity.Attach(new VisualComponent(texture));
+            entity.Attach(new PhysicComponent(position, new Point((int)(size.X), (int)(size.Y)), false, true));
+
+            _physWorld.AddAsync(entity.Get<PhysicComponent>().Body); //Important
 
             return entity;
         }
+
+        public Entity CreateGem(Point2 position, Point size, Texture2D texture, Vector2 scale, Color color)
+        {
+            var entity = _world.CreateEntity();
+
+            entity.Attach(new TransformComponent(position, 0, scale));
+            entity.Attach(new VisualComponent(texture));
+            entity.Attach(new PhysicComponent(position, new Point((int)(size.X), (int)(size.Y)), false, false));
+            entity.Attach(new CollectableItemComponent(color));
+
+            _physWorld.AddAsync(entity.Get<PhysicComponent>().Body); //Important
+
+            return entity;
+        }
+
+
 
         public Entity CreateFloor(Point2 position, Point size, Texture2D texture)
         {
@@ -81,7 +100,7 @@ namespace TheGameProject.Entities
             var incaTile1Scale = new Vector2(.25f, .25f);
             var incaTile1Size = new Point((int)(texture.Width * incaTile1Scale.X), (int)(texture.Height * incaTile1Scale.X));
             var howManyTileToFileScreen = size.X / incaTile1Size.X;
-            for (var i = 0; i < howManyTileToFileScreen; i++)
+            for (var i = 0; i < howManyTileToFileScreen+1; i++)
             {
                 sprites.Add(new ChildSprite(new Sprite(texture),
                                             new Point2(i * (incaTile1Size.X), 0f),
