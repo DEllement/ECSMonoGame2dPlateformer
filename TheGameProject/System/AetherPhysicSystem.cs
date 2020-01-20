@@ -62,7 +62,6 @@ namespace TheGameProject.System
             var leftVelocity = Math.Abs(playerPhys.Body.LinearVelocity.Y) > 0.1f ? -JUMP_MAX_VELOCITY_X : -MAX_VELOCITY_X;
             if (player.Get<UserInputComponent>().IsLeftDown && playerPhys.Body.LinearVelocity.X > leftVelocity)
                 playerPhys.Body.ApplyForce(new Vector2(leftVelocity, 0.0f));
-
             // Check if the player is currently jump
             foreach (var physicComponent in _physicComponents.Components)
             {
@@ -73,6 +72,8 @@ namespace TheGameProject.System
                     break;
                 }
             }
+
+            
 
             // Do Jump if possible
             if (!isJumping && player.Get<UserInputComponent>().IsSpaceDown)

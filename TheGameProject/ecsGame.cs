@@ -58,6 +58,7 @@ namespace TheGameProject
                        .AddSystem(new InputSystem())
                        .AddSystem(new AetherPhysicSystem(_physWorld))
                        .AddSystem(new RenderSystem(graphics.GraphicsDevice))
+                       .AddSystem(new CollectableItemSystem())
                        .Build();
 
             _entityFactory = new EntityFactory(_world, _physWorld);
@@ -66,6 +67,7 @@ namespace TheGameProject
 
            //Player
             var player = _entityFactory.CreatePlayer(new Point2(0, Window.ClientBounds.Height / 3), new Point(playerIdleTexture.Width, playerIdleTexture.Height), playerIdleTexture);
+            Console.WriteLine(player.Get<PhysicComponent>().BoundingBox.X);
 
             //Floor
             var incaTile1Scale = new Vector2(.25f, .25f);
@@ -89,7 +91,6 @@ namespace TheGameProject
             var gemSize = new Point((int)(RedGemTexture.Width * boxScale.X), (int)(RedGemTexture.Height * boxScale.Y));
 
             var GreenGem01 = _entityFactory.CreateGem(new Point2(700, floorPosition.Y - boxSize.Y+10), gemSize, RedGemTexture, boxScale, Color.Red);
-
 
             base.LoadContent();
         }

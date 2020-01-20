@@ -46,6 +46,10 @@ namespace TheGameProject.Components
             SpriteTexture = sprite;
             VisualComponentType = VisualComponentType.Texture;
         }
+        public VisualComponent()
+        {
+            VisualComponentType = VisualComponentType.Texture;
+        }
         public VisualComponent(Color color)
         {
             Color = color;

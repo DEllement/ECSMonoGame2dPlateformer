@@ -81,10 +81,9 @@ namespace TheGameProject.Entities
 
             entity.Attach(new TransformComponent(position, 0, scale));
             entity.Attach(new VisualComponent(texture));
-            entity.Attach(new PhysicComponent(position, new Point((int)(size.X), (int)(size.Y)), false, false));
-            entity.Attach(new CollectableItemComponent(color));
+            entity.Attach(new CollectableItemComponent(position, new Point((int)(size.X), (int)(size.Y))));
 
-            _physWorld.AddAsync(entity.Get<PhysicComponent>().Body); //Important
+            _physWorld.AddAsync(entity.Get<CollectableItemComponent>().Body); //Important
 
             return entity;
         }
