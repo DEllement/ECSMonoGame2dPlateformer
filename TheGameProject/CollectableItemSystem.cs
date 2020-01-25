@@ -32,9 +32,8 @@ namespace TheGameProject
             foreach (var CollComp in _CollectableItemComponents.Components)
             {
                 if (CollComp!= null) {
-                  //  Console.WriteLine(CollComp.BoundingBox);
-                    if (CollComp.BoundingBox.Intersects(playerPhys.BottomSensorBoundingBox))
-                        Console.WriteLine(CollComp.BoundingBox);
+                    if (CollComp.BoundingBox.Intersects(playerPhys.BoundingBox))
+                        Console.WriteLine("GemCollided");
                 } 
             }
         }

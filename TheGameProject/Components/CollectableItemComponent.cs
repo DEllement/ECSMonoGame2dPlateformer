@@ -14,24 +14,29 @@ namespace TheGameProject.Components
         public const float physScale = 100.0f; //Can change this on slow down the gravity or increase the speed
 
         public Point Size { get; set; }
-        public Body Body { get; set; }
+
+        public Point CPosition { get; set; }
         public Rectangle BottomSensorBoundingBox =>
-            new Rectangle((int)(Body.Position.X * physScale),
-                          (int)((Body.Position.Y * physScale) + Size.Y),
+            new Rectangle((int)(CPosition.X * physScale),
+                          (int)((CPosition.Y * physScale) + Size.Y),
                           (int)(Size.X),
                           10); //Need to Adjust
 
-        public Rectangle BoundingBox => new Rectangle((int)(Body.Position.X * physScale), (int)(Body.Position.Y * physScale), Size.X, Size.Y);
+        public Rectangle BoundingBox;
 
         public CollectableItemComponent(Point2 position, Point size)
         {
+            //ok i know its bad 
+            int X =(int)position.X;
+            int Y =(int)position.Y;
+
+            Point pos;
+            pos.X = X;
+            pos.Y = Y;
+
             Size = size;
-
-            Body = new Body();
-
-            Body.FixedRotation = true;
-
-            Body.BodyType = BodyType.Static;
+            
+            BoundingBox = new Rectangle(pos, Size);
         }
     }
 }

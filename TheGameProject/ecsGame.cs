@@ -57,8 +57,8 @@ namespace TheGameProject
             _world = new WorldBuilder()
                        .AddSystem(new InputSystem())
                        .AddSystem(new AetherPhysicSystem(_physWorld))
-                       .AddSystem(new RenderSystem(graphics.GraphicsDevice))
                        .AddSystem(new CollectableItemSystem())
+                       .AddSystem(new RenderSystem(graphics.GraphicsDevice))
                        .Build();
 
             _entityFactory = new EntityFactory(_world, _physWorld);
@@ -112,7 +112,4 @@ namespace TheGameProject
             base.Draw(gameTime);
         }
     }
-
-
-        
 }
