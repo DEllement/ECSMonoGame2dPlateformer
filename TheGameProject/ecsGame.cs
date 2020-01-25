@@ -90,7 +90,7 @@ namespace TheGameProject
             //Gems
             var gemSize = new Point((int)(RedGemTexture.Width * boxScale.X), (int)(RedGemTexture.Height * boxScale.Y));
 
-            var GreenGem01 = _entityFactory.CreateGem(new Point2(700, floorPosition.Y - boxSize.Y+10), gemSize, RedGemTexture, boxScale, Color.Red);
+            var GreenGem01 = _entityFactory.CreateGem(new Point2(700, floorPosition.Y - boxSize.Y+10), gemSize, RedGemTexture, boxScale, CollectibleItemType.RedGem);
 
             base.LoadContent();
         }

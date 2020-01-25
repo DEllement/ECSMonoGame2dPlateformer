@@ -75,17 +75,15 @@ namespace TheGameProject.Entities
             return entity;
         }
 
-        public Entity CreateGem(Point2 position, Point size, Texture2D texture, Vector2 scale, Color color)
+        public Entity CreateGem(Point2 position, Point size, Texture2D texture, Vector2 scale, CollectibleItemType itemType)
         {
             var entity = _world.CreateEntity();
 
             entity.Attach(new TransformComponent(position, 0, scale));
             entity.Attach(new VisualComponent(texture));
-            entity.Attach(new CollectableItemComponent(position, new Point((int)(size.X), (int)(size.Y))));
+            entity.Attach(new CollectableItemComponent(position, size, itemType));
             return entity;
         }
-
-
 
         public Entity CreateFloor(Point2 position, Point size, Texture2D texture)
         {

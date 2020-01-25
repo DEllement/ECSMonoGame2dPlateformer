@@ -29,12 +29,27 @@ namespace TheGameProject
             var player = GetEntity(_playerDatas.Components[0].PlayerId);
             var playerPhys = player.Get<PhysicComponent>();
 
-            foreach (var CollComp in _CollectableItemComponents.Components)
+            foreach (var entityId in ActiveEntities)
             {
-                if (CollComp!= null) {
-                    if (CollComp.BoundingBox.Intersects(playerPhys.BoundingBox))
-                        Console.WriteLine("GemCollided");
-                } 
+                var collItemEntity = GetEntity(entityId);
+                var collItemComp = collItemEntity.Get<CollectableItemComponent>();
+                if (!collItemComp.IsCollected && collItemComp.BoundingBox.Intersects(playerPhys.BoundingBox))
+                {
+                    collItemComp.IsCollected = true;
+                    switch (collItemComp.ItemType)
+                    {
+                        case CollectibleItemType.RedGem:
+                            player.Get<PlayerDataComponent>().totalRedGem++;
+                            break;
+                        //TODO: All the other here
+                    }
+                    //Remove the entity completly or...
+                    //this.DestroyEntity(entityId);
+
+                    //or Remove the visual component only...better cause we can use it in the objective system
+                    collItemComp.IsCollected = true;
+                    collItemEntity.Detach<VisualComponent>(); 
+                }
             }
         }
     }

@@ -10,10 +10,10 @@ namespace TheGameProject.Components
         public bool IsJumping { get; set; }
         public int PlayerId { get; set; }
 
-        int totalGreenGem { get; set; }
-        int totalRedGem { get; set; }
-        int totalBluenGem { get; set; }
-        int totalGoldGem { get; set; }
+        public int totalGreenGem { get; set; }
+        public int totalRedGem { get; set; }
+        public int totalBlueGem { get; set; }
+        public int totalGoldGem { get; set; }
 
         public PlayerDataComponent(int playerId, int life=3)
         {
@@ -26,7 +26,7 @@ namespace TheGameProject.Components
             Life = life;
             totalGreenGem = TGG;
             totalRedGem = TRG;
-            totalBluenGem = TBG;
+            totalBlueGem = TBG;
             totalGoldGem = TGoG;
         }
     }

@@ -9,34 +9,29 @@ using MonoGame.Extended;
 
 namespace TheGameProject.Components
 {
+    public enum CollectibleItemType
+    {
+        BlueGem,
+        RedGem,
+        GreenGem,
+        GoldGem
+    }
+
     public class CollectableItemComponent
     {
-        public const float physScale = 100.0f; //Can change this on slow down the gravity or increase the speed
-
         public Point Size { get; set; }
+        public Point Position { get; set; }
 
-        public Point CPosition { get; set; }
-        public Rectangle BottomSensorBoundingBox =>
-            new Rectangle((int)(CPosition.X * physScale),
-                          (int)((CPosition.Y * physScale) + Size.Y),
-                          (int)(Size.X),
-                          10); //Need to Adjust
+        public bool IsCollected { get; set; }
+        public CollectibleItemType ItemType { get; set; }
 
-        public Rectangle BoundingBox;
+        public Rectangle BoundingBox => new Rectangle(Position, Size);
 
-        public CollectableItemComponent(Point2 position, Point size)
+        public CollectableItemComponent(Point2 position, Point size, CollectibleItemType itemType)
         {
-            //ok i know its bad 
-            int X =(int)position.X;
-            int Y =(int)position.Y;
-
-            Point pos;
-            pos.X = X;
-            pos.Y = Y;
-
+            ItemType = itemType;
+            Position = new Point((int)position.X, (int)position.Y); 
             Size = size;
-            
-            BoundingBox = new Rectangle(pos, Size);
         }
     }
 }

@@ -47,6 +47,8 @@ namespace TheGameProject.System
                 // draw your entities
                 var entity = GetEntity(entityId);
                 var t = entity.Get<TransformComponent>();
+                if (entity.Get<VisualComponent>() == null)
+                    continue;
 
                 Rectangle dest;
                 switch (entity.Get<VisualComponent>().VisualComponentType)
