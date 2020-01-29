@@ -52,13 +52,15 @@ namespace TheGameProject
             var RedGemTexture = Content.Load<Texture2D>("gem_red");
             var BlueGemTexture = Content.Load<Texture2D>("gem_blue");
             var GoldGemTexture = Content.Load<Texture2D>("gem_gold");
+            var youWin = Content.Load<SpriteFont>("YouWin");
 
 
             _world = new WorldBuilder()
                        .AddSystem(new InputSystem())
                        .AddSystem(new AetherPhysicSystem(_physWorld))
                        .AddSystem(new CollectableItemSystem())
-                       .AddSystem(new RenderSystem(graphics.GraphicsDevice))
+                       .AddSystem(new PlayerStateSystem())
+                       .AddSystem(new RenderSystem(graphics.GraphicsDevice, youWin))
                        .Build();
 
             _entityFactory = new EntityFactory(_world, _physWorld);

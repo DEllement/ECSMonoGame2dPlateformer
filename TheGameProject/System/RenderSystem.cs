@@ -13,18 +13,19 @@ namespace TheGameProject.System
     {
         private GraphicsDevice _graphicsDevice;
         private SpriteBatch _spriteBatch;
-
+        private SpriteFont YouWin;
         private Texture2D fillTexture;
         //private ComponentMapper<VisualComponent> _colorComponentsMapper;
         //private ComponentMapper<PhysicComponent> _physicComponentMapper;
 
-        public RenderSystem(GraphicsDevice graphicsDevice)
+        public RenderSystem(GraphicsDevice graphicsDevice, SpriteFont youWin)
             : base(Aspect.All(
                 typeof(VisualComponent),
                 typeof(TransformComponent)))
         {
             _graphicsDevice = graphicsDevice;
             _spriteBatch = new SpriteBatch(graphicsDevice);
+            YouWin = youWin;
         }
 
         public override void Initialize(IComponentMapperService mapperService)
@@ -94,8 +95,9 @@ namespace TheGameProject.System
             }
 
             //FIXME: declare myFont, make it work
-            //_spriteBatch.DrawString(myFont, "Hello Centered", new Vector2(_graphicsDevice.DisplayMode.Width/2,_graphicsDevice.DisplayMode.Height/2), Color.DarkGray);
 
+
+           _spriteBatch.DrawString(YouWin, "Score", new Vector2(100, 100), Color.Red);
             _spriteBatch.End();
         }
     }

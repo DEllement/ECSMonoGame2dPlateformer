@@ -7,6 +7,7 @@ namespace TheGameProject.Components
     public class PlayerDataComponent
     {
         public int Life { get; set; }
+        public bool allGemCollected { get; set; }
         public bool IsJumping { get; set; }
         public int PlayerId { get; set; }
 
@@ -28,6 +29,7 @@ namespace TheGameProject.Components
             totalRedGem = TRG;
             totalBlueGem = TBG;
             totalGoldGem = TGoG;
+            allGemCollected = false;
         }
     }
 }

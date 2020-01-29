@@ -39,7 +39,7 @@ namespace TheGameProject
                     switch (collItemComp.ItemType)
                     {
                         case CollectibleItemType.RedGem:
-                            player.Get<PlayerDataComponent>().totalRedGem++;
+                            player.Get<PlayerDataComponent>().totalRedGem--;
                             break;
                         //TODO: All the other here
                     }

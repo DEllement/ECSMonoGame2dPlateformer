@@ -43,7 +43,7 @@ namespace TheGameProject.Entities
             entity.Attach(new PhysicComponent(position, new Point((int)(size.X*scale), (int)(size.Y*scale)), true, true));
             entity.Attach(new VisualComponent(texture));
             entity.Attach(new UserInputComponent());
-            entity.Attach(new PlayerDataComponent(entity.Id,0,1,0,0,0)); //WE assign the id in the special PlayerDataComponent
+            entity.Attach(new PlayerDataComponent(entity.Id,0,0,1,0,0)); //WE assign the id in the special PlayerDataComponent
 
             _physWorld.AddAsync(entity.Get<PhysicComponent>().Body);
 
