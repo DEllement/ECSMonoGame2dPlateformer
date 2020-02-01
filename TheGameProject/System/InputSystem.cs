@@ -27,6 +27,7 @@ namespace TheGameProject.System
 
         public override void Update(GameTime gameTime)
         {
+            //condition 4 if even playing
             _inputStates.Components[0].IsLeftDown = Keyboard.GetState().IsKeyDown(Keys.A);
             _inputStates.Components[0].IsRightDown = Keyboard.GetState().IsKeyDown(Keys.D);
             _inputStates.Components[0].IsUpDown = Keyboard.GetState().IsKeyDown(Keys.W);

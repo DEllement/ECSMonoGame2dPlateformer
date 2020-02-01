@@ -9,7 +9,14 @@ namespace TheGameProject.Components
         public int Life { get; set; }
         public bool allGemCollected { get; set; }
         public bool IsJumping { get; set; }
+        public bool playerWon { get; set; }
+        
         public int PlayerId { get; set; }
+
+        public int CollectedGreenGem { get; set; }
+        public int CollectedRedGem { get; set; }
+        public int CollectedBlueGem { get; set; }
+        public int CollectedGoldGem { get; set; }
 
         public int totalGreenGem { get; set; }
         public int totalRedGem { get; set; }

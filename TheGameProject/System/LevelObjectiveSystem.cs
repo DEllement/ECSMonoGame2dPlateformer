@@ -9,11 +9,11 @@ using TheGameProject.Entities;
 
 namespace TheGameProject.System
 {
-    class PlayerStateSystem : MonoGame.Extended.Entities.Systems.EntityUpdateSystem
+    class LevelObjectiveSystem : MonoGame.Extended.Entities.Systems.EntityUpdateSystem
     {
         private ComponentMapper<PlayerDataComponent> _playerDatas;
 
-        public PlayerStateSystem() : base(Aspect.All(typeof(CollectableItemComponent)))
+        public LevelObjectiveSystem() : base(Aspect.All(typeof(CollectableItemComponent)))
         {
         }
 
@@ -27,12 +27,18 @@ namespace TheGameProject.System
         {
             var player = GetEntity(_playerDatas.Components[0].PlayerId);
             var playerData = player.Get<PlayerDataComponent>();
+            //AllRedGemCollected;
+            bool AGGC= playerData.CollectedGreenGem ==playerData.totalGreenGem;
+            bool ARGC= playerData.CollectedRedGem ==playerData.totalRedGem;
+            bool AGoGC=playerData.CollectedGoldGem ==playerData.totalGoldGem;
+            bool ABGC = playerData.CollectedBlueGem ==playerData.totalBlueGem;
 
-            if(player.Get<PlayerDataComponent>().totalRedGem==0 && player.Get<PlayerDataComponent>().totalGoldGem == 0
-            && player.Get<PlayerDataComponent>().totalBlueGem == 0 && player.Get<PlayerDataComponent>().totalGreenGem == 0)
+            if (AGGC && ABGC && ARGC && AGoGC)
             {
+                Console.WriteLine(1);
                 player.Get<PlayerDataComponent>().allGemCollected = true;
             }
+
         }
     }
 }

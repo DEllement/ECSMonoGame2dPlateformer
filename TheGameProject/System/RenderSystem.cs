@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using TheGameProject.Components;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Content;
 
 namespace TheGameProject.System
 {
@@ -15,28 +17,28 @@ namespace TheGameProject.System
         private SpriteBatch _spriteBatch;
         private SpriteFont YouWin;
         private Texture2D fillTexture;
-        //private ComponentMapper<VisualComponent> _colorComponentsMapper;
-        //private ComponentMapper<PhysicComponent> _physicComponentMapper;
+        private ContentManager Content;
 
-        public RenderSystem(GraphicsDevice graphicsDevice, SpriteFont youWin)
+
+        public RenderSystem(GraphicsDevice graphicsDevice, ContentManager content)
             : base(Aspect.All(
                 typeof(VisualComponent),
                 typeof(TransformComponent)))
         {
             _graphicsDevice = graphicsDevice;
             _spriteBatch = new SpriteBatch(graphicsDevice);
-            YouWin = youWin;
+            Content = content;
         }
 
+        
         public override void Initialize(IComponentMapperService mapperService)
         {
-            //_colorComponentsMapper = mapperService.GetMapper<VisualComponent>();
-            //_physicComponentMapper = mapperService.GetMapper<PhysicComponent>();
-
             fillTexture = new Texture2D(_graphicsDevice, 1, 1, false, SurfaceFormat.Color);
             fillTexture.SetData<Color>(new Color[] { Color.White });
+            YouWin = Content.Load<SpriteFont>("YouWin");
+
         }
-      
+
         public override void Draw(GameTime gameTime)
         {
             _graphicsDevice.Clear(Color.Black); //This paint the background black
@@ -97,7 +99,7 @@ namespace TheGameProject.System
             //FIXME: declare myFont, make it work
 
 
-           _spriteBatch.DrawString(YouWin, "Score", new Vector2(100, 100), Color.Red);
+           _spriteBatch.DrawString(YouWin, "You Win", new Vector2(380, 200), Color.Red);
             _spriteBatch.End();
         }
     }

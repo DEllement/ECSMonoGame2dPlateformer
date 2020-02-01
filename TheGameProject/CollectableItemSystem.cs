@@ -39,9 +39,17 @@ namespace TheGameProject
                     switch (collItemComp.ItemType)
                     {
                         case CollectibleItemType.RedGem:
-                            player.Get<PlayerDataComponent>().totalRedGem--;
+                            player.Get<PlayerDataComponent>().CollectedRedGem++;
                             break;
-                        //TODO: All the other here
+                        case CollectibleItemType.GoldGem:
+                            player.Get<PlayerDataComponent>().CollectedGoldGem++;
+                            break;
+                        case CollectibleItemType.BlueGem:
+                            player.Get<PlayerDataComponent>().CollectedBlueGem++;
+                            break;
+                        case CollectibleItemType.GreenGem:
+                            player.Get<PlayerDataComponent>().CollectedGreenGem++;
+                            break;
                     }
                     //Remove the entity completly or...
                     //this.DestroyEntity(entityId);
