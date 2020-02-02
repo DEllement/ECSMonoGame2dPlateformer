@@ -49,6 +49,17 @@ namespace TheGameProject.System
         {
             delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
+            //Update all body from Transform ( Body = Transform )
+            foreach (var entityId in ActiveEntities)
+            {
+                var e = GetEntity(entityId);
+                var newPos = e.Get<TransformComponent>().Position / PhysicComponent.physScale;
+
+                e.Get<PhysicComponent>().Body.Position = new Vector2(newPos.X, newPos.Y);
+                e.Get<PhysicComponent>().Body.Rotation = e.Get<TransformComponent>().Rotation;
+            }
+
+
             var player = GetEntity(_playerDatas.Components[0].PlayerId);
             var playerPhys = player.Get<PhysicComponent>();
             var isJumping = player.Get<PlayerDataComponent>().IsJumping; 
@@ -89,7 +100,7 @@ namespace TheGameProject.System
          
             
 
-            //Update All Transform Component
+            //Update all Transform from Body ( Transform = Body )
             foreach (var entityId in ActiveEntities)
             {
                 var e = GetEntity(entityId);

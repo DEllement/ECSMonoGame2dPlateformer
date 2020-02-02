@@ -21,9 +21,11 @@ namespace TheGameProject.Entities
     {
         private ComponentMapper<VerticalMovingPlateComponent> _platePhys;
 
-        public MovingPlatePhysicSystem() : base(Aspect.All(typeof(CollectableItemComponent)))
-        {
-        }
+        public MovingPlatePhysicSystem() : base(Aspect.All(new[]{
+                                                                    typeof(VerticalMovingPlateComponent),
+                                                                    typeof(PhysicComponent)
+                                                                }))
+        {}
 
         public override void Initialize(MonoGame.Extended.Entities.IComponentMapperService mapperService)
         {
@@ -33,10 +35,12 @@ namespace TheGameProject.Entities
 
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            var plate = GetEntity(_platePhys.Id);
-            var platePhys = plate.Get<TransformComponent>();
-            platePhys.Position += new Microsoft.Xna.Framework.Vector2 (0f,1f);
-            Console.WriteLine(platePhys.Position);
+            foreach (var eId in ActiveEntities)
+            {
+                var plate = GetEntity(eId);
+                plate.Get<TransformComponent>().Position += new Microsoft.Xna.Framework.Vector2 (0f,0.05f);
+                //Console.WriteLine( plate.Get<TransformComponent>().Position);
+            }
         }
     }
 }
