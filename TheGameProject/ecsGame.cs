@@ -57,6 +57,7 @@ namespace TheGameProject
             _world = new WorldBuilder()
                        .AddSystem(new InputSystem())
                        .AddSystem(new AetherPhysicSystem(_physWorld))
+                       .AddSystem(new MovingPlatePhysicSystem())
                        .AddSystem(new CollectableItemSystem())
                        .AddSystem(new LevelObjectiveSystem())
                        .AddSystem(new RenderSystem(graphics.GraphicsDevice, Content))
@@ -64,11 +65,15 @@ namespace TheGameProject
 
             _entityFactory = new EntityFactory(_world, _physWorld);
 
-           
+            int life = 0;
+            int TGG = 1;
+            int TRG = 1;
+            int TBG = 0;
+            int TGoG = 0;
+
 
            //Player
-            var player = _entityFactory.CreatePlayer(new Point2(0, Window.ClientBounds.Height / 3), new Point(playerIdleTexture.Width, playerIdleTexture.Height), playerIdleTexture);
-            Console.WriteLine(player.Get<PhysicComponent>().BoundingBox.X);
+            var player = _entityFactory.CreatePlayer(new Point2(0, Window.ClientBounds.Height / 3), new Point(playerIdleTexture.Width, playerIdleTexture.Height), playerIdleTexture,  life,  TGG,  TRG,  TBG,  TGoG);
 
             //Floor
             var incaTile1Scale = new Vector2(.25f, .25f);
@@ -84,14 +89,15 @@ namespace TheGameProject
 
             //Plates
             var PlateSize = new Point((int)(incaPlate01Texture.Width * boxScale.X), (int)(incaPlate01Texture.Height * boxScale.Y));
-            var incaPlate1 = _entityFactory.CreatePlate(new Point2(320,320 ), PlateSize, incaPlate01Texture, boxScale);
+            var incaMovingPlate1 = _entityFactory.CreateMovingPlate(new Point2(320,320 ), PlateSize, incaPlate01Texture, boxScale);
             var incaPlate2 = _entityFactory.CreatePlate(new Point2(420,240 ), PlateSize, incaPlate01Texture, boxScale);
 
 
             //Gems
             var gemSize = new Point((int)(RedGemTexture.Width * boxScale.X), (int)(RedGemTexture.Height * boxScale.Y));
 
-            var GreenGem01 = _entityFactory.CreateGem(new Point2(700, floorPosition.Y - boxSize.Y+10), gemSize, RedGemTexture, boxScale, CollectibleItemType.RedGem);
+            var RedGem01 = _entityFactory.CreateGem(new Point2(700, floorPosition.Y - boxSize.Y+10), gemSize, RedGemTexture, boxScale, CollectibleItemType.RedGem);
+            var GreenGem01 = _entityFactory.CreateGem(new Point2(440, 240-35), gemSize, GreenGemTexture, boxScale, CollectibleItemType.GreenGem);
 
             base.LoadContent();
         }

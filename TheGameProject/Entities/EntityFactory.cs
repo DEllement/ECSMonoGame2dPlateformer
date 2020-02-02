@@ -34,7 +34,7 @@ namespace TheGameProject.Entities
             return entity;
         }
 
-        public Entity CreatePlayer(Point2 position, Point size, Texture2D texture)
+        public Entity CreatePlayer(Point2 position, Point size, Texture2D texture, int life, int TGG, int TRG, int TBG,int TGoG)
         {
             var scale = 2.0f;
 
@@ -43,7 +43,7 @@ namespace TheGameProject.Entities
             entity.Attach(new PhysicComponent(position, new Point((int)(size.X*scale), (int)(size.Y*scale)), true, true));
             entity.Attach(new VisualComponent(texture));
             entity.Attach(new UserInputComponent());
-            entity.Attach(new PlayerDataComponent(entity.Id,0,0,1,0,0)); //WE assign the id in the special PlayerDataComponent
+            entity.Attach(new PlayerDataComponent(entity.Id,life, TGG,TRG,TBG,TGoG)); //WE assign the id in the special PlayerDataComponent
 
             _physWorld.AddAsync(entity.Get<PhysicComponent>().Body);
 
@@ -69,6 +69,19 @@ namespace TheGameProject.Entities
             entity.Attach(new TransformComponent(position, 0, scale));
             entity.Attach(new VisualComponent(texture));
             entity.Attach(new PhysicComponent(position, new Point((int)(size.X), (int)(size.Y)), false, true));
+
+            _physWorld.AddAsync(entity.Get<PhysicComponent>().Body); //Important
+
+            return entity;
+        }
+        public Entity CreateMovingPlate(Point2 position, Point size, Texture2D texture, Vector2 scale)
+        {
+            var entity = _world.CreateEntity();
+
+            entity.Attach(new TransformComponent(position, 0, scale));
+            entity.Attach(new VisualComponent(texture));
+            entity.Attach(new PhysicComponent(position, new Point((int)(size.X), (int)(size.Y)), false, true));
+            entity.Attach(new VerticalMovingPlateComponent());
 
             _physWorld.AddAsync(entity.Get<PhysicComponent>().Body); //Important
 

@@ -35,7 +35,6 @@ namespace TheGameProject.System
 
             if (AGGC && ABGC && ARGC && AGoGC)
             {
-                Console.WriteLine(1);
                 player.Get<PlayerDataComponent>().allGemCollected = true;
             }
 

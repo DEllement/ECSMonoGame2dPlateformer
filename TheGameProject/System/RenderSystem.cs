@@ -18,6 +18,8 @@ namespace TheGameProject.System
         private SpriteFont YouWin;
         private Texture2D fillTexture;
         private ContentManager Content;
+        private ComponentMapper<PlayerDataComponent> _playerDatas;
+
 
 
         public RenderSystem(GraphicsDevice graphicsDevice, ContentManager content)
@@ -36,11 +38,16 @@ namespace TheGameProject.System
             fillTexture = new Texture2D(_graphicsDevice, 1, 1, false, SurfaceFormat.Color);
             fillTexture.SetData<Color>(new Color[] { Color.White });
             YouWin = Content.Load<SpriteFont>("YouWin");
+            _playerDatas = mapperService.GetMapper<PlayerDataComponent>();
 
         }
 
         public override void Draw(GameTime gameTime)
         {
+
+            var player = GetEntity(_playerDatas.Components[0].PlayerId);
+            var playerData = player.Get<PlayerDataComponent>();
+
             _graphicsDevice.Clear(Color.Black); //This paint the background black
 
             _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
@@ -96,10 +103,9 @@ namespace TheGameProject.System
                 }*/
             }
 
-            //FIXME: declare myFont, make it work
-
-
-           _spriteBatch.DrawString(YouWin, "You Win", new Vector2(380, 200), Color.Red);
+            if (playerData.allGemCollected) {
+                _spriteBatch.DrawString(YouWin, "You Win", new Vector2(380, 200), Color.Red); 
+            }
             _spriteBatch.End();
         }
     }
